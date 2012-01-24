@@ -1,0 +1,54 @@
+﻿body {
+  border: 1px solid red;
+  margin: 0px;
+  position: absolute;
+  width: 100%;
+  padding: 0px;
+  height: 100%;
+}
+
+.robo-down-1, .robot {
+  background-image: url('robots-sprites.png');
+  background-position: -97px -127px;
+  width: 32px;
+  height: 32px;
+}
+.robo-down-2 {
+  background-image: url('robots-sprites.png');
+  background-position: -128px -127px;
+  width: 32px;
+  height: 32px;
+}
+.robo-down-3 {
+  background-image: url('robots-sprites.png');
+  background-position: -160px -127px;
+  width: 32px;
+  height: 32px;
+}
+
+.hidden {
+  display: none;
+}
+
+
+table.game-table {
+  border-collapse: collapse;
+  border-spacing: 0px;
+}
+
+table.game-table td {
+  width: 32px; height: 32px;
+}
+
+table.game-table td.barrier {
+  background-color: Green;
+}
+table.game-table td.dot {
+  background-color: Blue;
+}
+table.game-table td.super-dot {
+  background-color: Yellow;
+}
+table.main td {
+  vertical-align: top;
+}
