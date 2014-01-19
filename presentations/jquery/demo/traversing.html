@@ -1,0 +1,26 @@
+	<dl class="selector">
+		<dt>$("#section1").add("p")</dt>
+		<dd>Selects #section1 and then adds all the paragraphs</dd>
+		<dt>$("p").filter(".important")</dt>
+		<dd>Selects all the paragraphs where the class = important</dd>
+		<dt>$("p").not(".important")</dt>
+		<dd>Excludes all the paragraphs where the class = important</dd>		
+		<dt>$("p").filter(".important").end()</dt>
+		<dd>Cancels the filter operation</dd>		
+		<dt>$("#section1").parent()</dt>
+		<dd>Selects #section1 and then adds all the paragraphs</dd>		
+		<dt>$("p").parent("#section1")</dt>
+		<dd>Selects the parent element of all the paragraphs who ID
+				is section1</dd>		
+		<dt>$("#section1").children()</dt>
+		<dd>Selects all the children of #section1</dd>
+		<dt>$("#section1").children("p[b]")</dt>
+		<dd>Selects all the child paragraphs of #section1 with bold text</dd>
+		<dt>$("#section1").children("b")</dt>
+		<dd>Selects all direct children bold text. (None should come up)</dd>
+		<dt>$("#section1").find("b")</dt>
+		<dd>Finds all children and grand chilren bold text elements.</dd>		
+		<dt>$("#section1 p").contains("Third")</dt>
+		<dd>Selects all our paragraphs which contain the text Third</dd>
+		<dt>$("#section1").next()</dt>
+		<dd>Selects the next sibling of #section1</dd>

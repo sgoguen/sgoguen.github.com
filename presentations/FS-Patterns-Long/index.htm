@@ -1,0 +1,1514 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <title>Presentation</title>
+  <base href="/presentations/FS-Patterns-Long/"/>
+  <meta charset='utf-8'>
+  <script src="./Scripts/jquery-1.5.1.js"></script>
+  <script src='./Content/fssnip/tips.js'></script>
+  <script src='./Scripts/slides.js'></script>
+  <link href="./Content/fssnip/style.css" rel="stylesheet" type="text/css" />
+  <style>
+    body.hidden {
+      display: none;
+    }
+    .no-margin {
+      margin: 0px;
+    }
+    .top-margin {
+      margin: 0px;
+      margin-top: 10px;
+    }
+    .note {
+      border: 1px solid black;
+      background-color: #ffffcc;
+      color: Green;
+      padding: 5px;
+      font-size: 15pt;
+    }
+    .no-padding {
+      padding: 0px;
+    }
+    .debug {
+      border: 1px solid green;
+    }
+    .left {
+      text-align: left;
+    }
+    .center {
+      text-align: center;
+    }
+    pre {
+      font-weight: bold;
+    }
+    .slides > article span.code {
+      white-space: pre;
+      font-size: 10pt;
+      line-height: normal;
+      letter-spacing: normal;
+    }
+  </style>
+</head>
+<body class="hidden">
+  <section class='slides layout-regular'>
+    
+<article class="center">
+  <div>
+    <h1>
+      Design Patterns in F#</h1>
+    <p>
+      Steve Goguen</p>
+  </div>
+</article>
+
+
+
+<article class="smaller">
+  <h3>
+    Who am I?</h3>
+  <ul>
+    <li>Not an F# expert</li>
+    <li>Web developer - Actually enjoy it</li>
+    <li>Silver bullet hunter</li>
+    <li>
+      <p>
+        Convinced mutating state is the root of all evil.
+        <br />
+        <br />
+      </p>
+      <h3>
+        Contact Info</h3>
+    </li>
+    <li>
+      <p>
+        Website: <a href="www.njgeeks.com">www.njgeeks.com</a></p>
+    </li>
+    <li>Twitter: <a href="http://twitter.com/#!/sgoguen">sgoguen</a></li>
+    <li>Google+ &amp; Email: <a href="">sgoguen@gmail.com</a></li>
+    <li>Bookmarks: <a href="http://www.delicious.com/sgoguen">delicious.com/sgoguen</a></li>
+  </ul>
+</article>
+
+<article class="smaller">
+  <div>
+    <h4>
+      Design Patterns</h4>
+    <ul>
+      <li>A general reusable solution to a commonly occurring problem</li>
+      <li>Not a finished design that can be transformed directly into code</li>
+      <li>Description or template for how to solve a problem that can be used in many different
+        situations</li>
+    </ul>
+    <p class="note">
+      Peter Norvig <a href="http://norvig.com/design-patterns/">noted</a> that many of
+      the 23 design patterns were significantly simplified or eliminated with higher level
+      languages.
+    </p>
+  </div>
+</article>
+
+<article class="smaller">
+  <div>
+    <small><q>…if thought corrupts language, language can also corrupt thought.</q></small>
+    <div class='author'>
+      George Orwell</div>
+  </div>
+</article>
+
+
+<article class="smaller">
+  <div class="center">
+    <div>
+      <img src="./images/orwell.png" /></div>
+    <br />
+    <div>
+      Does it really?</div>
+  </div>
+</article>
+
+
+<article class="smaller">
+  <div>
+    <h3>
+      Read All Files From a Folder</h3>
+    <div>
+      Comparing Apples to Oranges</div>
+    <p>
+      Functional F#</p>
+    <pre class="fssnip">
+<span class="k">let</span> <span title="val ReadFolder : (string -&gt; string [])"
+  class="i">ReadFolder</span> <span class="o">=</span> <span title="string -&gt; string[]"><span
+    class="i">Directory</span><span class="o">.</span><span class="i">GetFiles</span></span> <span
+      title="('a -> 'b) -> ('b -> 'c) -> 'a -> 'c" class="o">&gt;&gt;</span> <span title="('T -&gt; 'U) -&gt; 'T [] -&gt; 'U []"><span
+        class="i">Array</span><span class="o">.</span><span class="i">map</span></span> <span
+          title="string -> string"><span class="i">File</span><span class="o">.</span><span
+            onmouseout="hideTip(event, 'fstips9', 9)" onmouseover="showTip(event, 'fstips9', 9)"
+            class="i">ReadAllText</span></span>
+</pre>
+    <p>
+      Imperative C#</p>
+    <pre class="csh top-margin">
+string[] ReadFolder(string path) {
+  var filenames = Directory.GetFiles(path);
+  var results = new string[filenames.Length];
+  for(var i = 0; i < results.Length; i++) {
+    var filename = filenames[i];
+    var text = File.ReadAllText(filename);
+    results[i] = text;
+  }
+  return results;
+}
+</pre>
+    <p>
+      <i>Could ceremony and painstaking attention to the details corrupt your thinking and
+        distract you from solving your problem?</i></p>
+  </div>
+</article>
+
+
+<article class="smaller">
+  <div>
+    <h3>
+      Read All Files From a Folder</h3>
+    <div>
+      A Better Comparison</div>
+    <p>
+      Functional C#</p>
+    <pre class="csh top-margin">
+string[] ReadFolder(string path) {
+  return Directory.GetFiles(path).Select(f => File.ReadAllText(f)).ToArray();
+}
+</pre>
+    <p>
+      Functional F#</p>
+    <pre class="fssnip top-margin">
+<span class="k">let</span> <span title="val ReadFolder : (string -&gt; string [])"
+  class="i">ReadFolder</span> <span class="o">=</span> <span title="string -&gt; string[]"><span
+    class="i">Directory</span><span class="o">.</span><span class="i">GetFiles</span></span> <span
+      title="('a -> 'b) -> ('b -> 'c) -> 'a -> 'c" class="o">&gt;&gt;</span> <span title="('T -&gt; 'U) -&gt; 'T [] -&gt; 'U []"><span
+        class="i">Array</span><span class="o">.</span><span class="i">map</span></span> <span
+          title="string -> string"><span class="i">File</span><span class="o">.</span><span
+            onmouseout="hideTip(event, 'fstips9', 9)" onmouseover="showTip(event, 'fstips9', 9)"
+            class="i">ReadAllText</span></span>
+</pre>
+  </div>
+</article>
+
+
+<article class="smaller">
+  <div>
+    <h3>
+      Read All Files From a Folder</h3>
+    <div>
+      A Better Comparison</div>
+    <p>
+      Functional C# with LINQ</p>
+    <pre class="csh top-margin">
+string[] ReadFolder(string path) {
+  return (from f in Directory.GetFiles(path)
+          select File.ReadAllText(f)).ToArray();
+}
+</pre>
+    <p>
+      Functional F#</p>
+    <pre class="fssnip top-margin">
+<span class="k">let</span> <span title="val ReadFolder : (string -&gt; string [])"
+  class="i">ReadFolder</span> <span class="o">=</span> <span title="string -&gt; string[]"><span
+    class="i">Directory</span><span class="o">.</span><span class="i">GetFiles</span></span> <span
+      title="('a -> 'b) -> ('b -> 'c) -> 'a -> 'c" class="o">&gt;&gt;</span> <span title="('T -&gt; 'U) -&gt; 'T [] -&gt; 'U []"><span
+        class="i">Array</span><span class="o">.</span><span class="i">map</span></span> <span
+          title="string -> string"><span class="i">File</span><span class="o">.</span><span
+            onmouseout="hideTip(event, 'fstips9', 9)" onmouseover="showTip(event, 'fstips9', 9)"
+            class="i">ReadAllText</span></span>
+</pre>
+  </div>
+</article>
+
+
+
+
+
+<article class="smaller">
+  <div>
+    <h3>
+      The F# Version - Looking under the hood</h3>
+
+    <iframe src="./Content/snips/read-folder-defined.htm" style="width: 100%"></iframe>
+  </div>
+</article>
+
+
+<article class="smaller">
+  <div>
+    <h3>
+      The F# Version - Looking under the hood</h3>
+    <iframe src="./Content/snips/read-folder-defined2.htm" style="width: 100%"></iframe>
+  </div>
+</article>
+
+<article class="">
+  <h3>
+    Functional Programming Guidelines</h3>
+  <h4>
+    Favor pure functions</h4>
+  <ul>
+    <li>Pure functions have no side-effects</li>
+    <li>Pure functions are referentially transparent</li>
+    <li>Immutable values are preferred to mutable objects</li>
+  </ul>
+  <h4>
+    Real programs aren't pure</h4>
+  <ul>
+    <li>Identify the parts that are impure</li>
+    <li>Try to push input and side-effects to edges of your design</li>
+    <li>TDD helps isolate pure functions</li>
+  </ul>
+</article>
+
+
+<article class="">
+  <div>
+    <h3>
+      Pure Function</h3>
+    <pre class="fsh">
+let add x y = x + y
+</pre>
+    <h3>
+      Not Pure Functions</h3>
+    <pre class="fsh">
+Directory.GetFiles - // Different output for same input
+System.IO.File.WriteAllText - // Affects the outside world
+</pre>
+  </div>
+</article>
+
+
+
+<article class="">
+  <div>
+    <h3>
+      Referential Transparency</h3>
+    <pre class="fsh">
+let add x y = x + y
+let z = add 4 5
+</pre>
+    <p class="note">
+      The function's body can be substituted like so:</p>
+    <pre class="fsh">
+let z = 4 + 5
+</pre>
+  </div>
+</article>
+
+
+<article class="">
+  <div>
+    <h3>
+      Not Referential Transparent</h3>
+    <pre class="fsh">
+let files = Directory.GetFiles(@"C:\Test")
+let files1 = files
+let files2 = files
+</pre>
+    <p class="note">
+      Substitution changes behavior</p>
+    <pre class="fsh">
+let files1 = Directory.GetFiles(@"C:\Test")
+let files2 = Directory.GetFiles(@"C:\Test")
+</pre>
+  </div>
+</article>
+
+
+
+
+
+
+
+<article class="">
+  <div>
+    <h3>
+      Define Variables</h3>
+    <iframe src="./Content/snips/define-variables.htm" style="width: 100%"></iframe>
+  </div>
+</article>
+
+
+<article class="">
+  <div>
+    <h3>
+      Function - Partial Application</h3>
+    <iframe src="./Content/snips/functions1.htm" style="width: 100%"></iframe>
+  </div>
+</article>
+
+
+<article class="">
+  <div>
+    <h3>
+      Functions - Currying vs. Tuples</h3>
+    <iframe src="./Content/snips/functions2.htm" style="width: 100%"></iframe>
+  </div>
+</article>
+
+
+<article class="">
+  <div>
+    <h3>
+      Functions - In C#</h3>
+    <br />
+    <div>
+      Think of these as...</div>
+    <pre class="top-margin" style="font-family: Consolas; font-size: 13; color: black;
+      background: white;"><span style="color: blue;">let</span>&nbsp;add&nbsp;x&nbsp;y&nbsp;=&nbsp;x&nbsp;+&nbsp;y
+<span style="color: blue;">let</span>&nbsp;add2&nbsp;=&nbsp;<span style="color: blue;">fun</span>&nbsp;x&nbsp;y&nbsp;<span
+  style="color: blue;">-&gt;</span>&nbsp;x&nbsp;+&nbsp;y
+<span style="color: blue;">let</span>&nbsp;add3&nbsp;=&nbsp;<span style="color: blue;">fun</span>&nbsp;x&nbsp;<span
+  style="color: blue;">-&gt;</span>&nbsp;<span style="color: blue;">fun</span>&nbsp;y&nbsp;<span
+    style="color: blue;">-&gt;</span>&nbsp;x&nbsp;+&nbsp;y</pre>
+    <br />
+    <div>
+      Translated to C#</div>
+    <pre class="top-margin" style="font-family: Consolas; font-size: 13; color: black;
+      background: white;"><span style="color: #2b91af;">Func</span>&lt;<span style="color: blue;">int</span>,<span
+        style="color: #2b91af;">Func</span>&lt;<span style="color: blue;">int</span>,<span
+          style="color: blue;">int</span>&gt;&gt;&nbsp;Add&nbsp;=&nbsp;(x&nbsp;=&gt;&nbsp;{
+&nbsp;&nbsp;<span style="color: blue;">return</span>&nbsp;y&nbsp;=&gt;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">return</span>&nbsp;x&nbsp;+&nbsp;y;
+&nbsp;&nbsp;};
+});</pre>
+  </div>
+</article>
+
+
+
+
+
+<article class="">
+  <div>
+    <h3>
+      Function with a Body</h3>
+    <br />
+    <iframe src="./Content/snips/functions3.htm" style="width: 100%"></iframe>
+  </div>
+</article>
+
+
+<article class="">
+  <div>
+    <h3>
+      More Compositional</h3>
+    <br />
+    <iframe src="./Content/snips/functions4.htm" style="width: 100%"></iframe>
+  </div>
+</article>
+
+
+<article class="">
+  <div>
+    <h3>
+      Filtering Sequences - IEnumerable</h3>
+    <ol>
+      <li>We can many code patterns into functions</li>
+    </ol>
+    <iframe src="./Content/snips/functions5.htm" style="width: 100%"></iframe>
+  </div>
+</article>
+
+
+<article class="">
+  <div>
+    <h3>
+      Higher Ordered Functions</h3>
+    <iframe src="./Content/snips/functions6.htm" style="width: 100%"></iframe>
+  </div>
+</article>
+
+
+<article class="">
+  <div>
+    <h3>
+      Higher Ordered Functions</h3>
+    <iframe src="./Content/snips/functions7.htm" style="width: 100%"></iframe>
+  </div>
+</article>
+
+
+<article class="">
+  <div>
+    <h3>
+      Higher Ordered Functions</h3>
+    <iframe src="./Content/snips/combinators.htm" style="width: 100%"></iframe>
+  </div>
+</article>
+
+
+<article class="">
+  <div>
+    <h3>
+      Caching Made Simple</h3>
+    <iframe src="./Content/snips/memoize.htm" style="width: 100%"></iframe>
+  </div>
+</article>
+
+
+<article class="">
+  <div>
+    <h3>
+      Lazy Type</h3>
+    <iframe src="./Content/snips/lazy.htm" style="width: 100%"></iframe>
+  </div>
+</article>
+
+
+<article class="">
+  <div>
+    <h3>
+      Lists</h3>
+    <iframe src="./Content/snips/lists.htm" style="width: 100%"></iframe>
+  </div>
+</article>
+
+
+<article class="">
+  <div>
+    <h3>
+      Classes</h3>
+    <iframe src="./Content/snips/class-flow.htm" style="width: 100%"></iframe>
+  </div>
+</article>
+
+
+<article class="">
+  <div>
+    <h3>
+      The Interpreter Pattern - Enums on Steriod</h3>
+    <iframe src="./Content/snips/interpreter-1.htm" style="width: 100%"></iframe>
+  </div>
+</article>
+
+
+<article class="">
+  <div>
+    <h3>
+      Pattern Matching</h3>
+    <iframe src="./Content/snips/interpreter-2.htm" style="width: 100%"></iframe>
+  </div>
+</article>
+
+
+<article class="">
+  <div>
+    <h3>
+      Pattern Matching</h3>
+    <iframe src="./Content/snips/interpreter-3.htm" style="width: 100%"></iframe>
+  </div>
+</article>
+
+
+<article class="">
+  <div>
+    <h3>
+      Pattern Matching</h3>
+    <iframe src="./Content/snips/quotations.htm" style="width: 100%"></iframe>
+  </div>
+</article>
+
+
+<article class="">
+  <div>
+    <h3>
+      Active Patterns</h3>
+    <iframe src="./Content/snips/active-patterns.htm" style="width: 100%"></iframe>
+  </div>
+</article>
+
+
+<article class="">
+  <div>
+    <h3>
+      Aync Builder</h3>
+    <iframe src="./Content/snips/async1.htm" style="width: 100%"></iframe>
+  </div>
+</article>
+
+
+<article class="">
+  <div>
+    <h3>
+      What Builders are Made of...</h3>
+    <iframe src="./Content/snips/async2.htm" style="width: 100%"></iframe>
+  </div>
+</article>
+
+<article class="smaller">
+  <div>
+    <h3>
+      Type Notation</h3>
+    <table>
+      <tr>
+        <td>
+          <code>'a</code>
+        </td>
+        <td>
+          Support for simple types
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>'a -> 'b</code>
+        </td>
+        <td>
+          Functions
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>'a * 'b</code>
+        </td>
+        <td>
+          Tuples
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>'a + 'b</code>
+        </td>
+        <td>
+          Discriminated Unions
+        </td>
+      </tr>
+    </table>
+  </div>
+</article>
+
+
+<article class="smaller">
+  <div>
+    <h3>
+      A Few Examples</h3>
+    <table>
+      <tr>
+        <th width="350px">
+          Example
+        </th>
+        <th>
+          Meaning
+        </th>
+      </tr>
+      <tr>
+        <td>
+          <code><small>string</small></code>
+        </td>
+        <td>
+          A string type
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code><small>string * int</small></code>
+        </td>
+        <td>
+          A tuple. Example ("Hello", 5)
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code><small>string + int</small></code>
+        </td>
+        <td>
+          Something that can either be a string or an integer, but not both.
+          <br />
+          <b>Note: Syntax not supported in F#</b>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code><small>string -> int</small></code>
+        </td>
+        <td>
+          A function that takes a string and returns an integer
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code><small>unit -> int</small></code>
+        </td>
+        <td>
+          A function that takes a nothing and returns an integer
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code><small>string -> unit</small></code>
+        </td>
+        <td>
+          A function that takes a string and returns nothing
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code><small>'a</small></code>
+        </td>
+        <td>
+          A generic type
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code><small>'a -> 'a</small></code>
+        </td>
+        <td>
+          A function that accepts any type of object and returns an object of the same type
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code><small>('a -> 'b) -> (List<'a> -> List<'b>)</small></code>
+        </td>
+        <td>
+          A function that takes any function (from 'a to 'b) and returns a function that a
+          List<'a> and returns a List<'b>
+        </td>
+      </tr>
+    </table>
+  </div>
+</article>
+
+
+<article class="smaller">
+  <div>
+    <h3>
+      Type Notation Revisited</h3>
+    <table>
+      <tr>
+        <td>
+          <code>'a</code>
+        </td>
+        <td>
+          Support for simple types
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>'a -> 'b</code>
+        </td>
+        <td>
+          Functions
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>'a * 'b</code>
+        </td>
+        <td>
+          Tuples
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>'a + 'b</code>
+        </td>
+        <td>
+          Discriminated Unions
+        </td>
+      </tr>
+    </table>
+    <p class="note">
+      This assumes we're talking about pure functions</p>
+    <h3 class="top-margin">
+      Non-pure Functions</h3>
+    <table>
+      <tr>
+        <td>
+          <code>'a -> IO<'b></code>
+        </td>
+        <td>
+          Let's wrap non-pure values in an IO type
+        </td>
+      </tr>
+    </table>
+  </div>
+</article>
+
+
+<article class="smaller">
+  <div>
+    <h3>
+      Enumerating All Possible Types</h3>
+    <table>
+      <tr>
+        <td>
+          <code>'a</code>
+        </td>
+        <td>
+          A value
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>() -> 'a</code>
+        </td>
+        <td>
+          Function - no args returning a value
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>() -> IO<'a></code>
+        </td>
+        <td>
+          Function returning some input
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>'a -> 'a</code>
+        </td>
+        <td>
+          A pure function returning its own type
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>'a -> 'b</code>
+        </td>
+        <td>
+          A regular function
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>'a * 'b</code>
+        </td>
+        <td>
+          Tuples
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>'a + 'b</code>
+        </td>
+        <td>
+          Discriminated Unions
+        </td>
+      </tr>
+    </table>
+    <p class="note">
+      This assumes we're talking about pure functions</p>
+    <br />
+    <h3 class="top-margin">
+      How can we account for side-effects in types?</h3>
+  </div>
+</article>
+                       
+ <article class="smaller">
+   <div class="center">
+     <h3>
+       Let's Talk About Patterns and Names</h3>
+     <br />
+     <div>
+       <img src="./images/color-test.png" /></div>
+     <br />
+     <div>
+       ...but first, which square is a different color?</div>
+     <p>
+       One is clearly dumbu and the others are borou.</p>
+   </div>
+ </article>
+
+
+<article class="smaller">
+  <div class="center">
+    <div>
+      <img src="./images/color-test2.png" /></div>
+    <br />
+    <div>
+      Don't feel too bad, this test stumps the Himba people.</div>
+  </div>
+</article>
+
+
+
+<article class="smaller">
+  <div class="center">
+    <div>
+      <img src="./images/english-colors.png" height="40%" /></div>
+    <div>
+      <img src="./images/himba-colors.png" height="40%" /></div>
+    <p>
+      Do names define rigid mental boundaries?</p>
+  </div>
+</article>
+
+
+<article class="smaller">
+  <div class="center">
+    <h3>
+      Hierarchical Temporal Memory</h3>
+    <br />
+    <div>
+      <img src="./images/htm.jpg" width="100%" /></div>
+  </div>
+</article>
+
+
+<article class="smaller">
+  <div class="center">
+    <h3>
+      Let's train our brains to distort our vision</h3>
+    <br />
+    <div>
+      <img src="./images/movingspiral.gif" height="80%" /></div>
+  </div>
+</article>
+
+
+
+
+<article class="smaller">
+  <div class="center">
+    <h3>
+      Enough About Brains - Let's Talk About Patterns</h3>
+    <p>
+      Do these names distort our perspective?</p>
+    <table>
+      <tr>
+        <td>
+          <ul style="text-align: left">
+            <li title="'a -> 'b">Factory Method</li>
+            <li title="'a -> 'b">Interpreter</li>
+            <li title="'a -> 'b">Adaptor</li>
+            <li title="unit -> 'a">Singleton</li>
+            <li title="unit -> 'a">Lazy Initialization</li>
+            <li title="'a -> unit -> 'a">Prototype</li>
+            <li title="('a -> 'b) * ('c -> 'd)">Abstract Factory</li>
+            <li title="string -> 'a">Multiton</li>
+            <li title="'a -> 'b -> 'b">Decorator</li>
+            <li title="'a -> 'b -> 'c">Builder</li>
+            <li title="'a list -> 'a">Composite</li>
+          </ul>
+        </td>
+        <td>
+          <ul style="text-align: left">
+            <li title="('a * 'b) -> 'c">Façade</li>
+            <li title="(list<'a -> ('b + unit))> -> 'a -> ('b + unit)">Chain of Responsibility</li>
+            <li title="'a -> unit">Command</li>
+            <li>Front Controller</li>
+            <li>Flyweight</li>
+            <li>Proxy</li>
+            <li>Blackboard</li>
+            <li title="(('a + unit) * (unit -> μ))">Iterator</li>
+          </ul>
+        </td>
+        <td>
+          <ul style="text-align: left">
+            <li>Mediator</li>
+            <li>Memento</li>
+            <li>Null Object</li>
+            <li title="list<'a -> unit> -> 'a -> unit">Observer</li>
+            <li>Servant</li>
+            <li title="'a -> bool">Specification</li>
+            <li title="'a -> ">State</li>
+            <li title="('a -> 'b) -> ('a -> 'b)">Strategy</li>
+            <li>Template Method</li>
+            <li>Visitor</li>
+          </ul>
+        </td>
+      </tr>
+    </table>
+  </div>
+</article>
+
+
+
+
+<article class="smaller">
+  <div>
+    <h3>
+      The Factory Pattern - In C#</h3>
+    <q class="top-margin" style="margin-top: 15px;">Define an interface for creating an
+      object, but let the subclasses decide which class to instantiate. The Factory method
+      lets a class defer instantiation to subclasses.</q>
+    <h3 style="margin-top: 50px;">
+      Step 1: Define our interfaces</h3>
+    <pre class="csh top-margin">
+interface IEmployee {
+  string Name { get; }
+  decimal GetCheckAmount();
+}
+
+interface IEmployeeFactory {
+  IEmployee Create(string name, string position);
+}
+</pre>
+  </div>
+</article>
+
+
+
+<article class="smaller">
+  <div>
+    <h3>
+      The Factory Pattern - Step 2: Implement IEmployee</h3>
+    <pre class="csh">
+public class SalariedEmployee : IEmployee {
+  //  Our private fields to store our values
+  private string name;
+  private decimal yearlySalary;
+  
+  // Constructor
+  internal SalariedEmployee (string name, decimal yearlySalary) {
+    this.name = name;
+    this.yearlySalary = yearlySalary;
+  }
+
+  // Readonly Name property
+  string IEmployee.Name {
+    get { return name; }
+  }
+
+  // Function to calculate a check amount
+  decimal IEmployee.GetCheckAmount() {
+    return yearlySalary / 52;
+  }
+}
+</pre>
+  </div>
+</article>
+
+
+
+<article class="smaller">
+  <div>
+    <h3>
+      The Factory Pattern - Step 3: Implement a Factory</h3>
+    <p>
+      Create a class implementing IEmployeeFactory</p>
+    <pre class="csh top-margin">
+public class SalariedEmployeeFactory : IEmployeeFactory {
+  public IEmployee Create(string name, string position) {
+    if(position == "boss")
+      return new SalariedEmployee(name, 300000);
+    return new SalariedEmployee(name, 40000);
+  }
+}
+</pre>
+    <h3 class="top-margin">
+      Step 4: Try out our new factory</h3>
+    <pre class="csh top-margin">
+public class FactoryExamples {
+  public void Example1() {
+    IEmployeeFactory f = new SalariedEmployeeFactory();
+    IEmployee[] Employees = new IEmployee[] {
+      f.Create("Larry", "stooge"),
+      f.Create("Curly", "stooge"),
+      f.Create("Moe", "boss")
+    };
+
+  }
+}
+</pre>
+    <p class="center">
+      All that code just to create some lousy objects??? Really???</p>
+  </div>
+</article>
+
+
+<article class="smaller">
+  <div>
+    <h3>
+      Factories in F#</h3>
+    <p>
+      Step 1: Define the Employee interface (The factory will just be a function)</p>
+    <pre class="fsh top-margin">
+type IEmployee =
+  abstract member Name: string
+  abstract member GetCheckAmount: unit -> decimal
+</pre>
+    <p>
+      Step 2: Create a function returning an object implementing IEmployee</p>
+    <pre class="fsh top-margin">
+let createSalaryEmployee(name,position) = 
+  let yearlySalary = if position = "boss" then 300000.0m else 40000.0m
+  { new IEmployee with
+    member this.Name = name
+    member this.GetCheckAmount() = yearlySalary / 52.0m }
+</pre>
+    <p>
+      Step 3: Try out our constructor</p>
+    <pre class="fsh top-margin">
+//  Let's try this out
+let employee = createSalaryEmployee
+let employees = [
+  employee("Larry", "stooge") 
+  employee("Curly", "stooge")
+  employee("Moe", "boss")
+]
+</pre>
+    <div class="note top-margin">
+      Lesson: Simple factories are just functions we can swap out!</div>
+  </div>
+</article>
+
+
+
+
+<article class="smaller">
+  <div>
+    <h3>
+      The Singleton Pattern</h3>
+    <p>
+      C# Version</p>
+    <pre class="csh top-margin">
+class A {
+  public private A() {}
+  private static A instance = new A();
+  public static A Instance() {
+    return 
+  }
+  public void Action() {
+    Console.Write("action");
+  }
+}
+</pre>
+    <p>
+      <a href="http://fssnip.net/7p">Tao Liu's Version</a></p>
+    <pre class="fsh top-margin">
+type A private () =
+    static let instance = A()
+    static member Instance = instance
+    member this.Action() = printfn "action"
+
+let DesignPattern1() = 
+    let a = A.Instance;
+    a.Action()
+</pre>
+  </div>
+</article>
+;
+
+<article class="smaller">
+  <div>
+    <h3>
+      The Functional Singleton</h3>
+    <table border="0">
+      <tr>
+        <th width="50%">
+          F#
+        </th>
+        <th>
+          C#
+        </th>
+      </tr>
+      <tr>
+        <td>
+          <pre class="fsh"><span style="color: blue;">let</span>&nbsp;makeSingleton&nbsp;f&nbsp;=
+&nbsp;&nbsp;<span style="color: blue;">let</span>&nbsp;instance&nbsp;=&nbsp;f()
+&nbsp;&nbsp;<span style="color: blue;">fun</span>&nbsp;()&nbsp;<span style="color: blue;">-&gt;</span>&nbsp;instance</pre>
+        </td>
+        <td>
+          <pre class="csh">
+Func&lt;A&gt; makeSingleton&lt;A&gt;(Func&lt;A&gt; f) {
+  var instance = f();
+  return () =&gt; instance;
+}
+</pre>
+        </td>
+      </tr>
+    </table>
+    <ul>
+      <li>Constructors are just functions</li>
+      <li>Singletons are just constructors that return the same instance</li>
+      <li>Using first class functions, closures and higher ordered types there's no need
+        to repeat this pattern throughout your code. </li>
+    </ul>
+    <p class="note">
+      Let's try it out!</p>
+  </div>
+</article>
+
+
+
+<article class="smaller">
+  <div>
+    <h3>
+      The Decorator Pattern</h3>
+    <p>
+      Attach additional responsibilities to an object dynamically keeping the same interface.
+      Decorators provide a flexible alternative to subclassing for extending functionality.</p>
+    <pre class="csh">
+public interface Coffee {
+    public double getCost();
+    public String getIngredients();
+}
+
+public class SimpleCoffee : Coffee {
+    public double getCost() { return 1; }
+    public String getIngredients() { return "Coffee"; }
+}
+
+public class Milk : Coffee {
+    private Coffee decoratedCoffee;
+    public Milk(Coffee decoratedCoffee) {
+        this.decoratedCoffee = decoratedCoffee;
+    } 
+    public double getCost() { // overriding methods defined in the abstract superclass
+        return decoratedCoffee.getCost() + 0.5;
+    }
+    public String getIngredients() {
+        return decoratedCoffee.getIngredients() + ingredientSeparator + "Milk";
+    }
+}
+</pre>
+  </div>
+</article>
+
+
+
+<article class="smaller">
+  <div>
+    <h3>
+      The Decorator Pattern - In F#</h3>
+    <pre class="fsh top-margin">
+type Coffee =
+  abstract member getCost: unit -> double
+  abstract member getIngredients: unit -> string
+
+let SimpleCoffee = 
+  { new Coffee with 
+    member this.getCost() = 1.0
+    member this.getIngredients() = "Coffee"
+  }
+
+let Milk(coffee:Coffee) =
+  { new Coffee with 
+    member this.getCost() = coffee.getCost() + 0.5
+    member this.getIngredients() = coffee.getIngredients() + ", " + "milk"
+</pre>
+    <p class="top-margin">
+      Let's try this out</p>
+    <pre class="fsh top-margin">
+let myCoffee = Milk(SimpleCoffee)
+</pre>
+    <p class="top-margin">
+      We could pipe it too</p>
+    <pre class="fsh top-margin">
+let myCoffee = SimpleCoffee |> Milk
+</pre>
+  </div>
+</article>
+
+
+
+
+
+<article class="smaller">
+  <div>
+    <h3>
+      The Builder Pattern - In C#</h3>
+    <p>
+      Separate the construction of a complex object from its representation allowing the
+      same construction process to create various representations.</p>
+    <pre class="csh">
+class CoffeeBuilder {
+  protected Coffee coffee;
+
+  public Coffee getCoffee() {
+      return coffee;
+  }
+ 
+  public void createNewCoffeeProduct() {
+    coffee = new SimpleCoffee();
+  }
+ 
+  public void addMilk() {
+    coffee = new Milk(coffee);
+  }
+}
+</pre>
+    <pre class="csh">
+// Usage
+var builder = new CoffeeBuilder();
+builder.createNewCoffeeProduct();
+builder.addMilk();
+var myCoffee = builder.getCoffee();
+
+</pre>
+  </div>
+</article>
+
+
+<article class="smaller">
+  <div>
+    <h3>
+      The Builder Pattern - In C# Using Fluent Interface</h3>
+    <pre class="csh">
+class CoffeeBuilder {
+  protected Coffee coffee;
+
+  public Coffee getCoffee() {
+      return coffee;
+  }
+ 
+  public CoffeeBuilder createNewCoffeeProduct() {
+    coffee = new SimpleCoffee();
+    return this;
+  }
+ 
+  public CoffeeBuilder addMilk() {
+    coffee = new Milk(coffee);
+    return this;
+  }
+}
+</pre>
+    <pre class="csh">
+// Usage
+var myCoffee = new CoffeeBuilder()
+  .createNewCoffeeProduct().addMilk().getCoffee();
+</pre>
+  </div>
+</article>
+
+
+<article class="smaller">
+  <div>
+    <h3>
+      The Builder Pattern - In F# Using Fluent Interfaces</h3>
+    <p>
+      Define our fluent builder</p>
+    <pre class="fsh top-margin">
+type CoffeeBuilder(coffee:Coffee) = 
+  new() = CoffeeBuilder(SimpleCoffee)
+  member this.addMilk() = CoffeeBuilder(Milk(coffee))
+  member this.getCoffee() = coffee
+</pre>
+    <p>
+      Use it</p>
+    <pre class="fsh top-margin">
+let builder = new CoffeeBuilder()
+let myCoffee = builder.addMilk().getCoffee()
+</pre>
+  </div>
+</article>
+
+
+<article class="smaller">
+  <div>
+    <h3>
+      The Builder Pattern - In F#</h3>
+    <p>
+      Why create a fluent interface when you can just pipe constructors?</p>
+    <pre class="fsh top-margin">
+let myCoffee = SimpleCoffee |> Milk
+</pre>
+    <p>
+      Do F# Sequences use the Builder Pattern?</p>
+    <pre class="fsh top-margin">
+let myFunctions =
+  let path = @"C:\Project"
+  Directory.EnumerateFiles(path, "*.vb", SearchOption.AllDirectories)
+  |> Seq.map File.ReadAllText
+  |> Seq.collect (fun text -> Regex.Matches(text, "Function \w+\([^)]*\)") |> Seq.cast
+<match> )
+  |> Seq.map (fun m -> m.Value)
+  |> Seq.take 10  
+</pre>
+  </div>
+</article>
+
+
+
+
+<article class="smaller">
+  <div>
+    <h3>
+      Design Patterns Translated</h3>
+    <table>
+      <tr>
+        <th>
+          Pattern
+        </th>
+        <th width="37%">
+          Type
+        </th>
+      </tr>
+      <tr>
+        <td>
+          <b>Singleton</b> - Ensure a class has only one instance, and provide a global point
+          of access to it.
+        </td>
+        <td>
+          <code>() -> 'a</code>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Factory Method</b>
+        </td>
+        <td>
+          <code>'a -> 'b</code>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Lazy Initialization</b> - Delay creating an until the first time it's needed
+        </td>
+        <td>
+          <code>() -> 'a</code>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Prototype</b> - Specify the kinds of objects to create using a prototypical instance,
+          and create new objects by copying this prototype
+        </td>
+        <td>
+          <code>'a -> () -> 'a</code>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Adaptor</b> - Convert the interface of a class into another interface clients
+          expect.
+        </td>
+        <td>
+          <code>'a -> 'b</code>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Abstract Factory</b> - Provide an interface for creating families of related
+          or dependent objects
+        </td>
+        <td>
+          <code>('a -> 'b) * ('c -> 'd)</code>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Multiton</b> - Ensure a class has only named instances, and provide global point
+          of access to them
+        </td>
+        <td>
+          <code>string -> 'a</code>
+        </td>
+      </tr>
+    </table>
+  </div>
+</article>
+
+
+<article class="smaller">
+  <div>
+    <h3>
+      Design Patterns Translated</h3>
+    <table>
+      <tr>
+        <th>
+          Pattern
+        </th>
+        <th width="37%">
+          Type
+        </th>
+      </tr>
+      <tr>
+        <td>
+          Decorator - Attach additional responsibilities to an object dynamically keeping
+          the same interface.
+        </td>
+        <td>
+          <code>'b -> 'a -> 'a</code>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Builder
+        </td>
+        <td>
+          <code>'a -> 'b -> 'c</code>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Composite
+        </td>
+        <td>
+          <code>List<'a> -> 'a</code>
+        </td>
+      </tr>
+    </table>
+  </div>
+</article>
+
+<article class="smaller">
+  <div class="">
+    <h3 class="center">
+      Abstraction</h3>
+    <q>In computing science, more abstract viewpoints are often more useful, because of
+      the need to achieve independence from the often overwhelmingly complex details of
+      how things are represented or implemented.</q>
+    <div class="author">
+      Joseph Goguen</div>
+  </div>
+</article>
+
+
+<article class="smaller">
+  <div class="">
+    <h3 class="center">
+      Abstraction</h3>
+    <ul class="left">
+      <li>Things that appear to be different things may in fact have the same abstract structure</li>
+      <li>Removing metaphical names and labels helps identify these correlations</li>
+      <li>Tools: Category theory, type theory</li>
+    </ul>
+  </div>
+</article>
+
+
+
+<article class="smaller">
+  <h4>
+    Contact Info</h4>
+  <ul>
+    <li>Website: <a href="www.njgeeks.com">www.njgeeks.com</a></li>
+    <li>Twitter: <a href="http://twitter.com/#!/sgoguen">sgoguen</a></li>
+    <li>Google+ &amp; Email: <a href="">sgoguen@gmail.com</a></li>
+    <li>Bookmarks: <a href="http://www.delicious.com/sgoguen">delicious.com/sgoguen</a></li>
+  </ul>
+  <h4>
+    Free F# Resources</h4>
+  <ul>
+    <li><a href="http://www.tryfsharp.org/">www.tryfsharp.org</a> - In the Browser with
+      Guided Tour</li>
+    <li><a href="http://fssnip.net/">FSSnip</a> - F# Snippets Website </li>
+    <li><a href="http://en.wikibooks.org/wiki/F_Sharp_Programming">F# Wikibook</a> - Juliet
+      Rosenthal's free book</li>
+  </ul>
+</article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </section>
+</body>
+</html>

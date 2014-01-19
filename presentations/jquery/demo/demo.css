@@ -1,0 +1,76 @@
+body {
+	font-size: 1em;
+}
+.selected {
+	color: red;
+	border: 1px dotted black;
+	background: yellow;
+}
+.selected2 {
+	color: blue;
+}
+.special {
+	font-weight: bold;
+	border: 3px dashed blue; 
+}
+.examples-frame { 
+	float: left;
+	background-color: 000044;
+	padding: 2% 2% -2% 2%;
+	height: 100%;
+	overflow: scroll;
+	width: 30%;
+}
+.examples li,dt,dd,a,h2 {
+	padding: 5px 5px 5px 5px;
+	color: dddddd;
+}
+.example-list {
+	list-style-type: none;
+	list-style-position: outside;
+	display: block;
+	margin: 0px;
+	padding: 0px;
+	
+}
+.example-list li {
+	display: block;
+	margin: 0px;
+	padding: 0px;
+}
+.examples {
+	background-color: 000044;
+}
+.examples dt {
+	margin-top: 3px;
+	font-weight: bold;
+	cursor: pointer;
+}
+.examples dd {
+	padding-right: 5px;
+	margin: 0px;
+	font-weight: lighter;
+}
+#test_paragraph {
+	float: left;
+	clear: right;
+	padding: 10px;
+	width: 65%;
+  font-size: 1.2em;  
+}
+.code_example {
+  background-color: 000044;
+	color: dddddd;
+  font-size: 1em;  
+	height: 5em;
+}
+.code_example #code {
+  background-color: 000044;
+	color: dddddd;
+	font-weight: bold;
+	font-size: 1.5em;
+}
+.code_example th {
+  text-align: left;
+  padding-right: 10px;
+}

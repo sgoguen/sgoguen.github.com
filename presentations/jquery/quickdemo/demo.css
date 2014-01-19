@@ -1,0 +1,12 @@
+body  {
+	font:1em arial,helvetica,clean,sans-serif;
+}
+li.collapsed ul {
+	display: none;
+}
+li.selected {
+	color: red;
+}
+.parent_selected {
+	color: black;
+}

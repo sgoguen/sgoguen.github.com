@@ -1,0 +1,262 @@
+dd { }
+div.form div { display: inline; }
+
+/*
+-------------------------------------------------
+jQuery.css
+© 2007 John Resig  
+Design / HTML Production : Nate Cavanaugh
+=================================================
+*/
+
+/*  YUI Reset.css    //---------------------------*/
+body,div,dl,dt,dd,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td{margin:0;padding:0;}
+table{clear:both;border:1px solid #AAA;}
+/*table{border-collapse:collapse;border-spacing:0;}
+fieldset,img{border:0;}
+address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}
+ol,ul {list-style:none;}
+caption,th {text-align:left;}
+h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}*/
+q:before,q:after{content:'';}
+abbr,acronym {border:0;}
+/*   YUI Fonts.css   //---------------------------*/
+body {font:18px arial,helvetica,clean,sans-serif;*font-size:small;*font:x-small;}
+table {font-size:inherit;font:100%;}
+select, input, textarea {font:99% arial,helvetica,clean,sans-serif;}
+body * {line-height:1.22em;}
+/*   /End YUI   //---------------------------*/
+
+body{
+background: #FFF url(../images/hdr_bkg.gif) repeat-x;
+color: #444;
+}
+h1{
+font-size: 136%;
+margin-bottom:16px;
+}
+	h1.first{
+	font-weight:bold;
+	letter-spacing:-0.01em;
+	}
+	.ie h1.first{
+	letter-spacing:-1px;
+	}
+p{
+margin-bottom: 22px;
+}
+strong{
+font-weight:bold;
+}
+a{
+text-decoration:underline;
+color:#000;
+}
+a:hover{
+text-decoration:none;
+color:#057EB8;
+}
+pre.run{
+color:#acd373 !important;
+background:#444 !important;
+padding:5px !important;
+position:relative;
+margin-bottom: 10px !important;
+font-size: 96% !important;
+}
+pre {
+font-size: 96%;
+padding: 5px;
+background: #EEE;
+}
+.ie pre.run{
+font-size:90%;
+}
+	pre.run a{
+	display:block;
+	text-indent:-9999em;
+	background:url(../images/jq_run.gif) no-repeat;
+	position:absolute;
+	top:-17px;
+	right:0;
+	width:58px;
+	height:17px;
+	font-size:0;
+	}
+p.surprise {
+display: none;
+margin-bottom: 5px;
+}
+p.ohmy{
+padding:5px;
+border:1px solid #acd373;
+background:#fafff3;
+margin-bottom: 10px;
+}
+#donate{
+position:relative;
+}
+a.donate{
+display:block;
+width: 68px;
+height:18px;
+background: url(../images/jq_donate.gif) no-repeat;
+text-indent:-9999em;
+float:left;
+font-size:0;
+position:absolute;
+top:0;
+right: 18%;
+}
+		#content{
+		/*float:left;
+		width:364px;*/
+		width: auto !important;
+		/*margin-right:20px;*/
+		}
+		.ie #contents{
+		position:absolute;
+		top:106px;
+		float:none;
+		}
+			.download_link{
+			 padding-left: 30px;
+			 margin-left:20px;
+			 font-size: 80%;
+			}
+				.download_link span{
+					font-weight: bold;
+					font-size: 120%;
+					display:block;
+				}
+					.download_link span strong{
+						color:#d02c2c;
+					}
+			.download_link.uncompressed{
+			 background:url(../images/download_uncompressed.gif) no-repeat 0 50%;
+			}
+			.download_link.compressed{
+			 background:url(../images/download_compressed.gif) no-repeat 0 50%;
+			 margin-bottom:40px;
+			}
+			.latest_news{
+			
+			}
+				.latest_news h2{
+				font-weight:bold;
+				background: url(../images/latest_news_title.gif) no-repeat 0 50%;
+				padding-left: 20px;
+				}
+				.latest_news p{
+				margin-bottom:10px;
+				padding-left: 20px;
+				}
+		#more_info{
+		width:458px;
+		float:right;
+		position:relative;
+		top:-9px;
+		margin-left: 10px;
+		}
+		
+		.ie #more_info{
+		float:none;
+		position:absolute;
+		top: 86px;
+		right:0;
+		}
+		
+			#more_info h2{
+			font-size: 136%;
+			font-weight:normal;
+			margin: 0 0 5px 20px;
+			}
+			#dev_resources, #advanced_topics, #spread_love{
+			padding: 2px 0 2px 34px;
+			background: url() no-repeat 0 50%;
+			background-repeat: no-repeat;
+			}
+			#dev_resources{
+			background-image:url(../images/dev_resources.gif);
+			}
+			#advanced_topics{
+			background-image:url(../images/advanced_topics.gif);
+			}
+			#spread_love{
+			background-image:url(../images/spread_love.gif);
+			}
+			#more_info ul{
+			margin: 0 0 10px 54px;
+			list-style: none;
+			padding: 0;
+			}
+			#more_info li{
+			margin: 0 0 5px 0;
+			padding: 0;
+			}
+		div#summary{
+			background:url(../images/summary_bkg.gif) no-repeat;
+			height:264px;
+			padding:20px 10px;
+			margin-bottom: 40px;
+		}
+		.ie #summary{
+		padding: 20px 16px;
+		float:right;
+		}
+			#summary h2{
+			font-size: 136%;
+			font-weight:bold;
+			color:#fff;
+			margin: 0 0 15px 0;
+			}
+			#summary h3{
+			font-size: 107%;
+			font-weight:bold;
+			color:#c4df9b;
+			margin-bottom:15px;
+			width:164px;
+			}
+			#summary p{
+			font-size: 100%;
+			color:#fff;
+			margin-bottom:15px;
+			width:164px;
+			}
+			#summary ul{
+			margin: 0;
+			padding: 0;
+			}
+			#summary #who_for{
+			clear:both;
+			overflow:auto;
+			margin-bottom: 15px;
+			padding: 0;
+			}
+				#who_for li{
+				color:#abe7ff;
+				font-size: 120%;
+				border-bottom:1px dotted #abe7ff;
+				float:left;
+				margin:0 6px 0 0;
+				text-transform:uppercase;
+				padding: 0;
+			}
+			#summary #details{
+			float:right;
+			position:absolute;
+			right:12px;
+			top:95px;
+			width:235px;
+			}
+				#details li{
+				background: url(../images/benefits_check.gif) no-repeat 0 10%;
+				padding-left:34px;
+				font-size:77%;
+				color:#fff;
+				margin-bottom: 15px;
+				}
+					#details li h4{
+					font-weight:bold;
+					font-size:167%;
+					}

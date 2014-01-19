@@ -1,0 +1,12 @@
+body  {
+	font:1em arial,helvetica,clean,sans-serif;
+}
+.collapsed ul {
+	display: none;
+}
+.selected {
+	color: red;
+}
+.parent-selected {
+	color: green !important;
+}

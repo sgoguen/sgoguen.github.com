@@ -1,0 +1,99 @@
+<html>
+<head>	
+	<link rel="stylesheet" type="text/css" href="demo.css" />
+	<script language="javascript" src="jquery.js"></script>
+	
+	<Script>
+	<!--
+	
+	$(document).ready(function() {
+		
+		$("li").dblclick(function() {
+			$(this).toggleClass("collapsed");
+			return false;
+		});
+	
+		$("li").prepend("<input type='checkbox'/>");
+	
+		$("input[@type=checkbox]").click(function() {
+			if($(this).attr("checked")) {
+				$(this).parent().addClass("selected").find("li").addClass("parent-selected");
+			} else {
+				$(this).parent().removeClass("selected").find("li").removeClass("parent-selected");
+			}
+			return true;
+		}).dblclick(function() {
+			return false;
+		});
+	});
+	
+	/*
+	  4. Add event handler to checkboxes
+	  5. Show/Hide selection
+	  6. Show selection below
+		7. Turn example code into plug-in
+	*/
+							
+	//-->
+	</Script>
+</head>
+<body>
+
+<h1>Organization</h1>
+
+<a id="show_hide" href="#show">Show/Hide Unselected</a>
+
+<ul>
+	<li>Animal
+		<ul>
+			<li>Dogs
+				<ul>
+					<li>Lassie</li>
+					<li>Ol' Yeller</li>
+				</ul>
+			</li>
+			<li>Horses
+				<ul>
+					<li>Mr. Ed</li>
+					<li>Seabiscuit</li>
+				</ul>
+			</li>
+			<li>People
+				<ul>
+					<li>Brendan Eich</li>
+					<li>Eric Meyer</li>
+					<li>John Resig</li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+	<li>Vegitable
+		<ul>
+			<li>Onions</li>
+			<li>Lettuce</li>
+		</ul>
+	</li>
+	<li>Mineral
+		<ul>
+			<li>Sulfides
+				<ul>
+					<li>Galena</li>
+					<li>Pyrite</li>
+				</ul>
+			</li>
+			<li>Carbonates
+				<ul>
+					<li>Bismutite</li>
+					<li>Calcite</li>
+				</ul>
+			</li>
+		</ul>
+	</li>	
+</ul>
+
+<ul id="selected-items">
+
+</ul>
+
+</body>
+</html>

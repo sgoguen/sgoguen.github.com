@@ -1,0 +1,134 @@
+<html>
+<head>
+  
+  <link rel="stylesheet" href="css/ajaxdemo.css" type="text/css">
+
+  <script language="javascript" type="text/javascript" src="./js/jquery.js"></script>
+  <script language="javascript" type="text/javascript" src="./js/jtemplate.js"></script>
+  <script language="javascript" type="text/javascript" src="./js/tablesorter.js"></script>
+  <script language="javascript" type="text/javascript">
+  
+  $(document).ready(function() {
+
+    function init_sort() {
+      $("table#tasks").tableSorter({
+        sortClassAsc: 'sortUp',
+    		sortClassDesc: 'sortDown',
+    		highlightClass: 'highlight',
+    		headerClass: 'header'
+      });
+    }
+    init_sort();
+  
+    var task_bindings = {
+      ".remove": function() {
+				var url = $(this).attr("href");
+				var task_row = $(this).parents(".task");
+        $.ajax({
+          type: "GET",
+          url: url,
+					data: { f: "json" },
+          dataType: "json",
+          success: function(result) {
+            if(!result || !result.removed) return;
+            task_row.remove();
+            init_sort();
+          }
+        });
+        return false;
+      }
+    }
+  
+    $(".task").bindMany(task_bindings);
+    
+    $("#add_task").submit(function() {
+			task = {
+        m: "add_task",
+				f: "snippet",
+        description: $("input#description").val(),
+        assigned_to: $("select#assigned_to").val(),
+        priority: $("select#priority").val()      
+      }
+      $.ajax({
+        type: "POST",
+        url: "index.php",
+        data: task,
+        dataType: "html",
+        success: function(html) {
+          $("#task_list").append(html);
+          $(".task").bindMany(task_bindings);
+          clear_task();
+          init_sort();
+        }
+      });
+      return false;
+    });
+    
+    function clear_task() {
+      $("input#description").val("");
+      //$("select#assigned_to").val("");
+      //$("select#priority").val("");
+    }
+    
+  });
+  
+  </script>
+  
+<head>
+<body>
+
+  <table id="tasks" class="naglist" width="100%">
+    <thead>
+    <tr>
+      <!-- <th class="label" nowrap>Task ID</th> -->
+      <th class="label" width="80%">Task</th>
+      <th class="label" nowrap>Assigned To</th>
+      <th class="label">Priority</th>
+      <th class="label">Action</th>
+    </td>
+    </thead>    
+    <tbody id="task_list">
+      <? 
+      foreach($tasks as $task) {
+        include "task-item.phtml";
+      }
+      ?>
+    </tbody>
+    <tfoot>
+      <tr id="new_task">
+        <form id="add_task" name="add_task" action="index.php">
+          <input type="hidden" name="m" value="add_task">
+        <!-- <td>*New*</td> -->
+        <td class="input"><input id="description" name="description" type="text" style="width:100%;"></td>
+        <td class="input">
+          <select id="assigned_to" name="assigned_to">
+            <option></option>
+            <option selected>Steve</option>
+            <option>Dossy</option>
+            <option>Glen</option>
+            <option>Kipp</option>
+            <option>Luz</option>
+          </select>
+        </td>        
+        <td class="input">
+          <select id="priority" name="priority">
+            <option></option>
+            <option>Low</option>
+            <option selected>Normal</option>
+            <option>High</option>
+          </select>
+        </td>
+        <td class="actions">
+          <input type="submit" id="add" value="Add Task">
+          <!--<a id="add" href="#add">Add</a> -->
+        </td>
+        </form>
+      </tr>
+    </tfoot>
+  </table>
+  
+  <br>
+  <div><a href="ajaxdemo.tar.gz">Source Code</a></div>
+  
+</body>
+</html>

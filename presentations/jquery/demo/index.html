@@ -1,0 +1,116 @@
+<html>
+<head>
+	<script language="javascript" src="jquery.js"></script>
+	<script>
+	<!--
+	
+	$(function() {
+	
+		var test_paragraph = $("#test_paragraph");
+		
+		$(".example-list li a").toggle(function() {
+			var url = $(this).attr("href");
+      $(this).siblings("dl").remove();
+			var next = $(this).next();
+  		if(next.is("dl")) { 
+				next.show();
+				return false;
+			} else {
+				var li = $(this).parent();
+				$.get(url, function(html){
+					li.append(html);
+					listen_to_execute(li);
+				});
+			}
+  		return false;
+	  }, function() {
+  	  var next = $(this).next();
+  	  if(next.is("dl")) next.hide();
+  	  return false;
+	  });
+
+		var test_paragraph = $("#test_paragraph");
+
+		function listen_to_execute(context) {
+			$(".example-list dt", context).hover(function() {
+        $("#code").text($(this).text());
+        $("#description").text($(this).next().text());
+      }, function() {
+        $("#code,#description").text("");
+      });
+      
+      $(".example-list dl.execute dt", context).click(function() {
+				var js = $(this).text();
+				var jq = eval(js);
+			});
+			
+			$(".example-list dl.selector dt", context).hover(function() {
+				var selector = $(this).text();
+				var jq = eval("_jq_ = " + selector);
+				jq.addClass("selected");
+			},
+			function() {
+				var selector = $(this).text();
+				var jq = eval("_jq_ = " + selector);
+				jq.removeClass("selected");
+			});
+			
+      
+		}
+		
+	});
+	
+	//-->
+	</script>
+	
+	<link rel="stylesheet" type="text/css" href="jquery.css" />
+	<link rel="stylesheet" type="text/css" href="demo.css" />
+</head>
+<body>
+	
+	<div class="examples-frame">
+	
+		<div class="examples">
+			<h2>JQuery Examples</h2>
+			<ul class="example-list">
+				<li><a href="selectors.html">Selectors</a></li>
+				<li><a href="attributes.html">Attributes/CSS</a></li>
+				<li><a href="traversing.html">Traversing</a></li>				
+				<li><a href="manipulation.html">Manipulation</a></li>
+				<!--
+				<li><a href="events.html">Events</a></li>
+				<li><a href="ajax.html">Ajax</a></li>
+				<li><a href="utilities.html">Utilities</a></li>
+				-->
+			</ul>
+		</div>
+		
+	</div>
+	
+	<div id="test_paragraph">
+    
+    <table class="code_example" width="100%">
+      <tr><th>Code:</th><td width="90%"><pre id="code"></pre></td></tr>
+      <tr><th>Desc:</th><td id="description"></td></tr>
+    </table>
+    <hr>
+  
+		<div id="section1">
+			<h1>Section 1</h1>
+			<p class="important">
+				First paragraph where class="important" and having some 
+				<b>bold text</b>, no alignment specified.</p>
+			<p align="right">Second paragraph, <i>italicized text</i>, aligned right.</p>
+			<p>Third paragraph with some <b>bold text</b>, no alignment.</p>
+			<p align="center">Last paragraph with center alignment</p>
+		</div>
+		<div id="section2">
+			<h1>Section 2</h1>
+			<p class="important">First "important" paragraph with some <b>bold text</b>.</p>
+			<p align="right">Second paragraph with some <i>italicized text</i> aligned all the way over to the right.</p>
+			<p>Third paragraph with some <b>bold text</b>.</p>
+			<p align="center">Last paragraph with center alignment</p>
+		</div>		
+	</div>
+</body>
+</html>
