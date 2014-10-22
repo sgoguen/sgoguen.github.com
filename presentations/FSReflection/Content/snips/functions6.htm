@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><link rel="stylesheet" type="text/css" href="style.css" />
+<script type="text/javascript" src="tips.js"></script></head><body>
+<pre class="fssnip">
+<span class="l"> 1: </span><span class="k">open</span> <span onmouseout="hideTip(event, 'fstips1', 1)" onmouseover="showTip(event, 'fstips1', 1)" class="i">System</span><span class="o">.</span><span onmouseout="hideTip(event, 'fstips2', 2)" onmouseover="showTip(event, 'fstips2', 2)" class="i">IO</span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span><span class="k">module</span> <span onmouseout="hideTip(event, 'fstips3', 3)" onmouseover="showTip(event, 'fstips3', 3)" class="i">Seq</span> <span class="o">=</span>
+<span class="l"> 4: </span>  <span class="k">let</span> <span onmouseout="hideTip(event, 'fstips4', 4)" onmouseover="showTip(event, 'fstips4', 4)" class="i">map</span> <span onmouseout="hideTip(event, 'fstips5', 5)" onmouseover="showTip(event, 'fstips5', 5)" class="i">testFunction</span> <span onmouseout="hideTip(event, 'fstips6', 6)" onmouseover="showTip(event, 'fstips6', 6)" class="i">list</span> <span class="o">=</span>
+<span class="l"> 5: </span>    <span onmouseout="hideTip(event, 'fstips7', 7)" onmouseover="showTip(event, 'fstips7', 7)" class="i">seq</span> { 
+<span class="l"> 6: </span>      <span class="k">for</span> <span onmouseout="hideTip(event, 'fstips8', 8)" onmouseover="showTip(event, 'fstips8', 8)" class="i">item</span> <span class="k">in</span> <span onmouseout="hideTip(event, 'fstips6', 9)" onmouseover="showTip(event, 'fstips6', 9)" class="i">list</span> <span class="k">do</span>
+<span class="l"> 7: </span>        <span class="k">if</span> <span onmouseout="hideTip(event, 'fstips5', 10)" onmouseover="showTip(event, 'fstips5', 10)" class="i">testFunction</span>(<span onmouseout="hideTip(event, 'fstips8', 11)" onmouseover="showTip(event, 'fstips8', 11)" class="i">item</span>) <span class="o">=</span> <span class="k">true</span> <span class="k">then</span>
+<span class="l"> 8: </span>          <span class="k">yield</span> <span onmouseout="hideTip(event, 'fstips8', 12)" onmouseover="showTip(event, 'fstips8', 12)" class="i">item</span>
+<span class="l"> 9: </span>    }
+<span class="l">10: </span><a target="_blank" class="fssniplink" href="http://tomasp.net/fswebsnippets">F# Web Snippets</a>
+</pre>
+
+
+<!-- HTML code for ToolTips -->
+<div class="tip" id="fstips1">namespace System<br /></div>
+<div class="tip" id="fstips2">namespace System.IO<br /></div>
+<div class="tip" id="fstips3">Multiple items<br />module Seq<br /><br />from Functions6<br /><br />--------------------<br /><br />module Seq<br /><br />from Microsoft.FSharp.Collections<br /></div>
+<div class="tip" id="fstips4">val map : ('a -&gt; bool) -&gt; seq&lt;'a&gt; -&gt; seq&lt;'a&gt;<br /><br />Full name: Functions6.Seq.map<br /></div>
+<div class="tip" id="fstips5">val testFunction : ('a -&gt; bool)<br /></div>
+<div class="tip" id="fstips6">Multiple items<br />val list : seq&lt;'a&gt;<br /><br />&#160;&#160;type: seq&lt;'a&gt;<br />&#160;&#160;inherits: System.Collections.IEnumerable<br /><br /><br />--------------------<br /><br />type 'T list = List&lt;'T&gt;<br /><br />Full name: Microsoft.FSharp.Collections.list&lt;_&gt;<br /><br />&#160;&#160;type: 'T list<br />&#160;&#160;implements: System.Collections.IStructuralEquatable<br />&#160;&#160;implements: System.IComparable&lt;List&lt;'T&gt;&gt;<br />&#160;&#160;implements: System.IComparable<br />&#160;&#160;implements: System.Collections.IStructuralComparable<br />&#160;&#160;implements: System.Collections.Generic.IEnumerable&lt;'T&gt;<br />&#160;&#160;implements: System.Collections.IEnumerable<br /></div>
+<div class="tip" id="fstips7">Multiple items<br />val seq : seq&lt;'T&gt; -&gt; seq&lt;'T&gt;<br /><br />Full name: Microsoft.FSharp.Core.Operators.seq<br /><br />--------------------<br /><br />type seq&lt;'T&gt; = System.Collections.Generic.IEnumerable&lt;'T&gt;<br /><br />Full name: Microsoft.FSharp.Collections.seq&lt;_&gt;<br /><br />&#160;&#160;type: seq&lt;'T&gt;<br />&#160;&#160;inherits: System.Collections.IEnumerable<br /></div>
+<div class="tip" id="fstips8">val item : 'a<br /></div>
+</body></html>
