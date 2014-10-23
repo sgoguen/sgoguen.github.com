@@ -1084,6 +1084,45 @@ let And = Abstraction("p", Abstraction("q",
 
       </div>
     </article>
+
+    <article class="smaller">
+      <h3>An Untyped Language that's a Closed System</h3>
+      <p>You can apply any function to any other function - It just might not ever stop</p>
+      <table>
+        <tr><td>I or ID</td><td>λa.a</td></tr>
+        <tr><td>K</td><td>λa.λb.a</td></tr>
+        <tr><td>S</td><td>λa.λb.λc.a c (b c)</td></tr>
+      </table>
+      <table>
+        <tr><td>TRUE</td><td>λa.λb.a</td></tr>
+        <tr><td>FALSE</td><td>λa.λb.b</td></tr>
+        <tr><td>0</td><td>λa.λb.b</td></tr>
+        <tr><td>1</td><td>λa.λb.a b</td></tr>
+        <tr><td>2</td><td>λa.λb.a (a b)</td></tr>
+        <tr><td>POW</td><td>λa.λb.b a</td></tr>
+        <tr><td>AND</td><td>λa.λb.a b a</td></tr>
+        <tr><td>OR</td><td>λa.λb.a a b</td></tr>
+
+      </table>
+      <p class="center">A good closed system can be universally powerful and insightful</p>
+    </article>
+    
+    <article>
+      <h3>Symbolically Evaluating Pure Lambda Calculus</h3>
+      <table>
+        <tr><td>ID</td><td>λx.x</td></tr>
+        <tr><td>TRUE</td><td>λx.λy.x</td></tr>
+        <tr><td>FALSE</td><td>λx.λy.y</td></tr>
+        <tr><td>AND</td><td>λp.λq.p q p</td></tr>
+      </table>
+      <p>Let's partially evaluate And(True)</p>
+      <table>
+        <tr><td>1. (<b>λp</b>.λq.<b>p</b> q <b>p</b>)(λx.λy.x)</td></tr>
+        <tr><td>2. (<del>λp.</del>λq.(<b>λx</b>.λy.<b>x</b>) q (λx.λy.x))</td></tr>
+        <tr><td>3. (λq.(<del>λx</del>.<b>λy</b>.q) (λx.λy.x))</td></tr>
+        <tr><td>4. (λq.q)</td></tr>
+      </table>
+    </article>
     
     <article class="smaller">
       <h3>Converting F# to Pure Lambda Calculus</h3>
@@ -1106,7 +1145,7 @@ let FsAnd = &lt;@@ fun p q -> p q p @@&gt; |> toLambda
 </pre>
       </p>
 
-      <p>Actually...  FsAnd will not compile because the Hindler-Milner-Dalmas type
+      <p>Actually...  FsAnd will not compile because the Damas-Hindley-Milner type
       system cannot infer the type.</p>
     </article>
 
@@ -1114,9 +1153,12 @@ let FsAnd = &lt;@@ fun p q -> p q p @@&gt; |> toLambda
       <h3>Modifying our Translator to Support FsAnd</h3>
       <pre class="fsh top-margin">
 type Fn = delegate of Fn -> Fn
+</pre>
+<p>Note the recursive type above defined as a <b>delegate</b></p>      
+<pre class="fsh top-margin">
 let rec toLambda (e:Microsoft.FSharp.Quotations.Expr) =
-  match e with
-  | Patterns.Lambda(v, e) -> Lambda(v.Name, toLambda e)
+match e with
+| Patterns.Lambda(v, e) -> Lambda(v.Name, toLambda e)
   | Patterns.Application(left, right) -> App(toLambda left, toLambda right)
   | Patterns.Var(var) -> Var(var.Name)
   | Patterns.Call(Some(left), methodInfo, [right]) 
@@ -1135,36 +1177,64 @@ let FsAnd = &lt;@@ fun (p:fn) (q:fn) -> p.Invoke(q).Invoke(p) @@&gt; |> toLambda
       </p>
     </article>
     
-    <article>
-      <h2></h2>
+    <article class="smaller">
+      <h3>Working Towards an Evaluator</h3>
+      <p>We need to be able to substitute variables with expressions</p>
+      <pre class="fsh">
+let rec substitute (varName:var) (withExpr:term) (expr:term) =
+    let doSubRec = substitute varName withExpr 
+    match expr with
+    | Var(name) when varName = name -> withExpr
+    | App(left, right) -> App(doSubRec left, doSubRec right)
+    | Lambda(var, body) when var <> varName -> 
+        Lambda(var, doSubRec body)
+    | x -> x
+</pre>
+      <p>Let's start by with evaluating a single step before we tackle the larger problem</p>
+<pre class="fsh">
+let rec evalStep expr = 
+  match expr with
+  | App(Lambda(var, expr), right) -> substitute var right expr
+  | App(left, right) -> App(evalStep left, evalStep right)
+  | Lambda(var, body) -> Lambda(var, evalStep body)
+  | x -> x
 
-    </article>
-
-    <!--<article class="">
-  <div>
-    <h3>
-      Pattern Matching</h3>
-    <iframe src="./Content/snips/quotations.htm" style="width: 100%"></iframe>
-  </div>
-</article>-->
-
-
-    <article class="">
-      <div>
-        <h3>Active Patterns</h3>
-        <iframe src="./Content/snips/active-patterns.htm" style="width: 100%"></iframe>
-      </div>
+</pre>
     </article>
     
-    <article class="">
-      <div>
-        <h3>Active Patterns Can Provide Clarity</h3>
-      </div>
+    <article class="smaller">
+      <h3>Evaluating Multiple Steps</h3>
+      <div>Let's evaluate multiple steps</div>
+      <pre class="fsh">let rec eval (maxSteps:int) (term:term) =
+  seq {
+    yield term
+    let last = ref term
+    let next = ref (evalStep term)
+    while next.Value <> last.Value do
+      yield next.Value
+      last := next.Value
+      next := evalStep next.Value
+  } |> Seq.truncate maxSteps |> Seq.toList
+</pre>
+      
+      <div>A utility to print</div>
+      <pre class="fsh">
+let printEval max term =
+  let steps = term |> eval max
+  for step in steps do
+    printfn "%s" (ToString step)
+  let last = steps |> List.rev |> List.head
+  last
+</pre>
       
     </article>
+    
 
+    <article>
+      <h1>Implementing Patterns for DSLs</h1>
+    </article>
 
-    <article class="">
+<article class="">
   <div>
     <h3>
       Aync Builder</h3>
@@ -1180,8 +1250,25 @@ let FsAnd = &lt;@@ fun (p:fn) (q:fn) -> p.Invoke(q).Invoke(p) @@&gt; |> toLambda
     <iframe src="./Content/snips/async2.htm" style="width: 100%"></iframe>
   </div>
 </article>
+    
+    <article class="smaller">
+      <h3>Computation Expression Building Blocks</h3>
+      <table>
+        <tr><th>Zero</th><td>() &rarr; M a</td></tr>
+        <tr><th>Return</th><td>a &rarr; M a</td></tr>
+        <tr><th>Yield</th><td>a &rarr; M a</td></tr>
+        <tr><th>ReturnFrom</th><td>M a &rarr; M a</td></tr>
+        <tr><th>YieldFrom</th><td>M a &rarr; M a</td></tr>
+        <tr><th>Delay</th><td>() &rarr; M a &rarr; M a</td></tr>
+        <tr><th>Combine</th><td>M a &rarr; M a &rarr; M a</td></tr>
+        <tr><th>Bind</th><td>M a &rarr; (a &rarr; M b) &rarr; M b</td></tr>
+        <tr><th>For</th><td>seq a &rarr; (a &rarr; M b) &rarr; M b</td></tr>
+        <tr><th>For</th><td>seq a &rarr; (a &rarr; M b) &rarr; seq M b</td></tr>
+        <tr><th>While</th><td>(() &rarr; bool) * (M a &rarr; M a)</td></tr>
+      </table>
+    </article>
 
-<article class="smaller">
+    <article class="smaller">
   <div>
     <h3>
       Enumerating All Possible Types</h3>

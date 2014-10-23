@@ -37,33 +37,69 @@ module Lambda =
     | App(left, right) -> App(doSubRec left, doSubRec right)
     | Lambda(var, body) when var <> varName -> Lambda(var, doSubRec body)
     | x -> x
-  let rec evalStep = function
+  let (|NonShadowingLamda|_|) varName expr = 
+    match expr with
+    | Lambda(var, body) when var <> varName -> Some(NonShadowingLamda(var, body))
+    | _ -> None
+  let rec substitute2 (varName:var) (withExpr:term) (expr:term) =
+    let doSubRec = substitute varName withExpr 
+    match expr with
+    | Var(name) when varName = name -> withExpr
+    | App(left, right) -> App(doSubRec left, doSubRec right)
+    | NonShadowingLamda varName (var, body) -> Lambda(var, doSubRec body)
+    | x -> x
+
+  let alphaNormalize (expr:term) =
+    let rec normalizeRec (n:int) (expr:term) =
+      let newVarName = sprintf "v%i" n
+      let newVar = Var(newVarName)
+      let normalize = normalizeRec (n + 1)
+      match expr with
+      | Lambda(var, body) as l -> 
+        let newBody = normalize body
+        let subbedVar = substitute var newVar newBody
+        Lambda(newVarName, subbedVar)
+      | App(left, right) -> App(normalize left, normalize right)
+      | x -> x
+    normalizeRec 0 expr
+  let rec evalStep expr = 
+    match expr with
     | App(Lambda(var, expr), right) -> substitute var right expr
     | App(left, right) -> App(evalStep left, evalStep right)
     | Lambda(var, body) -> Lambda(var, evalStep body)
     | x -> x
-  let rec eval (term:term) =
-    term |> Seq.unfold (fun previous -> 
-        let next = evalStep previous
-        if previous = next then None
-        else Some(next, next)
-    )
-     
+
+  let rec eval (maxSteps:int) (term:term) =
+    seq {
+      yield term
+      let last = ref term
+      let next = ref (evalStep term)
+      while next.Value <> last.Value do
+        yield next.Value
+        last := next.Value
+        next := evalStep next.Value
+    } |> Seq.truncate maxSteps |> Seq.toList
+  let printEval max term =
+    let steps = term |> eval max
+    for step in steps do
+      printfn "%s" (ToString step)
+    let last = steps |> List.rev |> List.head
+    last
 
 module BooleanLogic =
-  let FsId = <@@ fun x -> x @@>
-  let FsTrue = <@@ fun x y -> x @@>
-  let FsFalse = <@@ fun x y -> y @@>
-  let FsNot = <@@ fun p a b -> p b a @@>
-  let FsAnd = <@@ fun (p:Fn) (q:Fn) -> p.Invoke(q).Invoke(p) @@>
-  
-  let Id = FsId |> Lambda.fromExpr
-  let True = FsTrue |> Lambda.fromExpr
-  let False = FsFalse |> Lambda.fromExpr
-  let Not = FsNot |> Lambda.fromExpr
-  let And = FsAnd |> Lambda.fromExpr
-  
-  let step1 = App(And, True) |> Lambda.evalStep
-  let step2 = step1 |> Lambda.evalStep
-  let step3 = step2 |> Lambda.evalStep
-  let step4 = step3 |> Lambda.evalStep
+  let Id = <@@ fun x -> x @@> |> Lambda.fromExpr |> Lambda.alphaNormalize
+  let True = <@@ fun x y -> x @@> |> Lambda.fromExpr |> Lambda.alphaNormalize
+  let False = <@@ fun x y -> y @@> |> Lambda.fromExpr |> Lambda.alphaNormalize
+  let Not = <@@ fun p a b -> p b a @@> |> Lambda.fromExpr |> Lambda.alphaNormalize
+  let And = <@@ fun (p:Fn) (q:Fn) -> p.Invoke(q).Invoke(p) @@> |> Lambda.fromExpr |> Lambda.alphaNormalize
+
+  let ex1 = App(App(And, True), True) |> Lambda.printEval 10
+
+  let Zero = <@@ fun f x -> x @@> |> Lambda.fromExpr 
+  let One = <@@ fun f x -> f x @@> |> Lambda.fromExpr
+  let Two = <@@ fun f x -> f (f x) @@> |> Lambda.fromExpr
+  let Succ = <@@ fun n f x -> f (n f x) @@> |> Lambda.fromExpr
+  let Plus = <@@ fun m n f x -> m f (n f x) @@> |> Lambda.fromExpr
+
+  let ZeroSucc = App(Succ, Zero) |> Lambda.printEval 10
+  let OnePlus = App(App(Succ, One),One) |> Lambda.printEval 10
