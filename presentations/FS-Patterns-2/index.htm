@@ -81,11 +81,11 @@
     </li>
     <li>
       <p>
-        Website: <a href="www.njgeeks.com">www.njgeeks.com</a></p>
+        Website: <a href="http://sgoguen.github.io/">http://sgoguen.github.io/</a></p>
     </li>
     <li>Twitter: <a href="http://twitter.com/#!/sgoguen">sgoguen</a></li>
     <li>Google+ &amp; Email: <a href="">sgoguen@gmail.com</a></li>
-    <li>Bookmarks: <a href="http://www.delicious.com/sgoguen">delicious.com/sgoguen</a></li>
+    <!--<li>Bookmarks: <a href="http://www.delicious.com/sgoguen">delicious.com/sgoguen</a></li>-->
   </ul>
 </article>
 
@@ -313,15 +313,16 @@ string[] ReadFolder(string path) {
         </div>
       </div>
     </article>
+    
+    <article>
+      <h1 class="center">Design Patterns and Names</h1>
+    </article>
 
     <article class="smaller">
       <div class="center">
         <h3>
-          Enough About Brains - Let's Talk About Patterns
-        </h3>
-        <p>
           Do these names distort our perspective?
-        </p>
+        </h3>
         <table>
           <tr>
             <td>
@@ -369,7 +370,30 @@ string[] ReadFolder(string path) {
         </table>
       </div>
     </article>
-        
+
+    <article>
+      <h3>The Factory Pattern</h3>
+      <blockquote style="font-size: inherit; line-height: inherit">
+        In class-based programming, the factory method pattern is a creational 
+        pattern which uses factory methods to deal with the problem of creating 
+        objects without specifying the exact class of object that will be 
+        created. This is done by creating objects via calling a factory 
+        method—either specified in an interface and implemented by child 
+        classes, or implemented in a base class and optionally overridden by 
+        derived classes—rather than by calling a constructor.
+      </blockquote>
+      <p>
+        <b>Note the language used to describe the pattern.</b>
+      </p>
+    </article>
+    
+    <article>
+      <h3>The Factory Pattern - How about a UML Diagram?</h3>
+      <p>
+        <img src="http://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/FactoryMethod.svg/600px-FactoryMethod.svg.png" />
+      </p>
+    </article>
+    
     <article class="smaller">
       <div>
         <h3>
@@ -497,13 +521,22 @@ let employees = [
   employee("Moe", "boss")
 ]
 </pre>
-        <div class="note top-margin">
-          Lesson: Simple factories are just functions we can swap out!
-        </div>
       </div>
     </article>
 
-
+    <article>
+      <h3>Take Aways</h3>
+      <ul>
+        <li>When functions are first class types, constructors are simply swappable
+            functions</li>
+        <li>If you're creating a class with a single method, like a factory, 
+          create a function instead</li>
+        <li>All functions of the same type are polymorphic with all other functions 
+          of the same type</li>
+        <li>Object expressions are a convenient way to implement interfaces
+            on the fly</li>
+      </ul>
+    </article>
     <article class="smaller">
       <div>
         <h3>
@@ -556,10 +589,11 @@ let DesignPattern1() =
           </tr>
           <tr>
             <td>
-              <pre class="fsh"><span style="color: blue;">let</span>&nbsp;makeSingleton&nbsp;f&nbsp;=
-&nbsp;&nbsp;<span style="color: blue;">let</span>&nbsp;instance&nbsp;=&nbsp;f()
-&nbsp;&nbsp;<span style="color: blue;">fun</span>&nbsp;()&nbsp;<span style="color: blue;">-&gt;</span>&nbsp;instance</pre>
-            </td>
+            <pre class="fsh">
+let makeSingleton f =
+  let instance = lazy f()
+  fun () -> instance.Value
+</pre>
             <td>
               <pre class="csh">
 Func&lt;A&gt; makeSingleton&lt;A&gt;(Func&lt;A&gt; f) {
@@ -626,32 +660,45 @@ public class Milk : Coffee {
         <pre class="fsh top-margin">
 type Coffee =
   abstract member getCost: unit -> double
-  abstract member getIngredients: unit -> string
+  abstract member getIngredients: unit -> string list
 let SimpleCoffee = 
   { new Coffee with 
     member this.getCost() = 1.0
-    member this.getIngredients() = "Coffee"
+    member this.getIngredients() = ["Coffee"]
   }
-let Milk(coffee:Coffee) =
+let WithMilk(coffee:Coffee) =
   { new Coffee with 
     member this.getCost() = coffee.getCost() + 0.5
-    member this.getIngredients() = coffee.getIngredients() + ", " + "milk"
+    member this.getIngredients() = "milk" :: coffee.getIngredients() }
+let WithSyrup (syrup:string) (coffee:Coffee) =
+  { new Coffee with 
+    member this.getCost() = coffee.getCost() + 0.25
+    member this.getIngredients() = syrup :: coffee.getIngredients() }
 </pre>
         <p class="top-margin">
           Let's try this out
         </p>
         <pre class="fsh top-margin">
-let myCoffee = Milk(SimpleCoffee)
+let myCoffee = WithMilk(SimpleCoffee)
 </pre>
         <p class="top-margin">
           We could pipe it too
         </p>
         <pre class="fsh top-margin">
-let myCoffee = SimpleCoffee |> Milk
+let yourCoffee = SimpleCoffee |> WithMilk |> WithSyrup "pumpkin spice"
 </pre>
       </div>
     </article>
 
+    <article>
+      <h3>Take Aways</h3>
+      <ul>
+        <li>Decorators are implemented elegantly with object expressions</li>
+        <li>The pipeline constructor gives us a nice fluent interface for free</li>
+        <li>Partial application make parameterize decorating easy</li>
+        <li>The inner object should be always be the last parameter</li>
+      </ul>
+    </article>
 
     <article class="smaller">
       <div>
@@ -770,6 +817,33 @@ let myFunctions =
       </div>
     </article>
     
+    <article>
+      <h3>Composites</h3>
+      <pre class="fsh top-margin smaller">
+type Shape =
+  abstract Draw: unit -> DrawingInstructions list
+  abstract HitTest: Point -> bool
+</pre>
+      <pre class="fsh top-margin smaller">
+let line (p1:Point) (p2:Point) = 
+    { new Shape with
+      member this.Draw() = [Line(p1, p2)]
+      member this.HitTest(point) = true
+    }
+</pre>
+<pre class="fsh top-margin smaller">
+let compositeShape (shapes:Shape list) = 
+  { new Shape with 
+    member this.Draw() = 
+      [ for shape in shapes do 
+          for instr in shape.Draw() do
+            yield instr ]
+    member this.HitTest(point) = 
+      shapes |> List.exists(fun shape -> shape.HitTest(point)) }
+</pre>
+
+    </article>
+
     <article class="smaller">
       <div>
         <h3>Patterns Implemented Elegantly with Object Expressions</h3>
@@ -852,7 +926,49 @@ let myFunctions =
       </div>
     </article>
 
-  <article class="">
+    <article class="small">
+      <h3>Should we use metaphorical names for type signatures?</h3>
+      <table>
+        <tr><th>Action</th><td>() &rarr; ()</td></tr>
+        <tr><th>Source</th><td>() &rarr; a</td></tr>
+        <tr><th>Sinks</th><td>a &rarr; ()</td></tr>
+        <tr><th>Function</th><td>a &rarr; b</td></tr>
+        <tr><th>Predicate</th><td>a &rarr; bool</td></tr>
+        <tr><th>Picker</th><td>a &rarr; Option&lt;b&gt;</td></tr>
+        <tr><th>Lifter</th><td>a &rarr; M&lt;a&gt;</td></tr>
+        <tr><th>Combiner</th><td>a &rarr; b &rarr; c</td></tr>
+        <tr><th>Folder</th><td>a &rarr; b &rarr; a</td></tr>
+      </table>
+      <ul>
+        <li>Don't these patterns already have canonical names?</li>
+      </ul>
+    </article>
+
+    <article>
+      <h1>Patterns Implemented Elegantly with Union Types and Pattern Matching</h1>
+    </article>
+
+    <article class="smaller">
+      <h3>Patterns Implemented Elegantly with Union Types and Pattern Matching</h3>
+      <table>
+        <tr><th>Pattern</th><th>Description</th></tr>
+        <tr>
+          <th>Visitor Pattern</th>
+          <td>Represent an operation to be performed on the elements of an object structure. </td>
+        </tr>
+        <tr>
+          <th>Interpreter Pattern</th>
+          <td>Given a language, define a representation for its grammar along with an interpreter that uses the representation to interpret sentences in the language. </td>
+        </tr>
+        <tr>
+          <th>Specification Pattern</th>
+          <td>Recombinable business logic in a Boolean fashion</td>
+        </tr>
+      </table>
+    </article>
+
+
+    <article class="">
     <div>
       <h3>Defining and Visiting a Simple AST</h3>
       <iframe src="./Content/snips/interpreter-1.htm" style="width: 100%"></iframe>
