@@ -67,18 +67,14 @@
   <h3>
     Who am I?</h3>
   <ul>
+    <li>Average developer</li>
+    <li>Works on line of business and web applications - Enjoy it too!</li>
     <li>Not an F# expert</li>
-    <li>Web developer - Actually enjoy it</li>
-    <li>Silver bullet hunter</li>
-    <li>
-      <p>
-        Convinced mutating state is the root of all evil.
-        <br />
-        <br />
-      </p>
-      <h3>
-        Contact Info</h3>
-    </li>
+    <li>Sucker for a Great Product</li>
+  </ul>
+  <br/><br/>
+  <h3>Contact Info</h3>
+  <ul>
     <li>
       <p>
         Website: <a href="http://sgoguen.github.io/">http://sgoguen.github.io/</a></p>
@@ -87,24 +83,6 @@
     <li>Google+ &amp; Email: <a href="">sgoguen@gmail.com</a></li>
     <!--<li>Bookmarks: <a href="http://www.delicious.com/sgoguen">delicious.com/sgoguen</a></li>-->
   </ul>
-</article>
-
-<article class="smaller">
-  <div>
-    <h4>
-      Design Patterns</h4>
-    <ul>
-      <li>A general reusable solution to a commonly occurring problem</li>
-      <li>Not a finished design that can be transformed directly into code</li>
-      <li>Description or template for how to solve a problem that can be used in many different
-        situations</li>
-    </ul>
-    <p class="note">
-      Peter Norvig <a href="http://norvig.com/design-patterns/">noted</a> that many of
-      the 23 design patterns were significantly simplified or eliminated with higher level
-      languages.
-    </p>
-  </div>
 </article>
 
 <article class="smaller">
@@ -317,6 +295,28 @@ string[] ReadFolder(string path) {
     <article>
       <h1 class="center">Design Patterns and Names</h1>
     </article>
+    
+    <article class="smaller">
+      <div>
+        <h4>
+          Design Patterns
+        </h4>
+        <ul>
+          <li>A general reusable solution to a commonly occurring problem</li>
+          <li>A recipe - not a finished design that can be transformed directly into code</li>
+          <li>
+            Description or template for how to solve a problem that can be used in many different
+            situations  
+          </li>
+        </ul>
+        <p class="note">
+          Peter Norvig <a href="http://norvig.com/design-patterns/">noted</a> that many of
+          the 23 design patterns were significantly simplified or eliminated with higher level
+          languages.
+        </p>
+      </div>
+    </article>
+    
 
     <article class="smaller">
       <div class="center">
@@ -368,6 +368,7 @@ string[] ReadFolder(string path) {
             </td>
           </tr>
         </table>
+        <p>Do the names alone sufficiently describe them?</p>
       </div>
     </article>
 
@@ -397,7 +398,7 @@ string[] ReadFolder(string path) {
     <article class="smaller">
       <div>
         <h3>
-          The Factory Pattern - In C#
+          The Factory Pattern - An Example
         </h3>
         <q class="top-margin" style="margin-top: 15px;">
           Define an interface for creating an
@@ -525,17 +526,20 @@ let employees = [
     </article>
 
     <article>
-      <h3>Take Aways</h3>
+      <h3>Takeaways</h3>
       <ul>
         <li>When functions are first class types, constructors are simply swappable
-            functions</li>
+          functions</li>
         <li>If you're creating a class with a single method, like a factory, 
           create a function instead</li>
         <li>All functions of the same type are polymorphic with all other functions 
           of the same type</li>
         <li>Object expressions are a convenient way to implement interfaces
-            on the fly</li>
+          on the fly</li>
       </ul>
+    </article>
+    <article>
+      <h1>More Pattern Recipes</h1>
     </article>
     <article class="smaller">
       <div>
@@ -605,16 +609,12 @@ Func&lt;A&gt; makeSingleton&lt;A&gt;(Func&lt;A&gt; f) {
           </tr>
         </table>
         <ul>
-          <li>Constructors are just functions</li>
-          <li>Singletons are just constructors that return the same instance</li>
+          <li>Singletons are just functions that return the same instance</li>
           <li>
             Using first class functions, closures and higher ordered types there's no need
             to repeat this pattern throughout your code.
           </li>
         </ul>
-        <p class="note">
-          Let's try it out!
-        </p>
       </div>
     </article>
 
@@ -657,36 +657,7 @@ public class Milk : Coffee {
         <h3>
           The Decorator Pattern - In F#
         </h3>
-        <pre class="fsh top-margin">
-type Coffee =
-  abstract member getCost: unit -> double
-  abstract member getIngredients: unit -> string list
-let SimpleCoffee = 
-  { new Coffee with 
-    member this.getCost() = 1.0
-    member this.getIngredients() = ["Coffee"]
-  }
-let WithMilk(coffee:Coffee) =
-  { new Coffee with 
-    member this.getCost() = coffee.getCost() + 0.5
-    member this.getIngredients() = "milk" :: coffee.getIngredients() }
-let WithSyrup (syrup:string) (coffee:Coffee) =
-  { new Coffee with 
-    member this.getCost() = coffee.getCost() + 0.25
-    member this.getIngredients() = syrup :: coffee.getIngredients() }
-</pre>
-        <p class="top-margin">
-          Let's try this out
-        </p>
-        <pre class="fsh top-margin">
-let myCoffee = WithMilk(SimpleCoffee)
-</pre>
-        <p class="top-margin">
-          We could pipe it too
-        </p>
-        <pre class="fsh top-margin">
-let yourCoffee = SimpleCoffee |> WithMilk |> WithSyrup "pumpkin spice"
-</pre>
+        <iframe src="./Content/snips/decorator.html" style="width: 100%"></iframe>
       </div>
     </article>
 
@@ -819,29 +790,7 @@ let myFunctions =
     
     <article>
       <h3>Composites</h3>
-      <pre class="fsh top-margin smaller">
-type Shape =
-  abstract Draw: unit -> DrawingInstructions list
-  abstract HitTest: Point -> bool
-</pre>
-      <pre class="fsh top-margin smaller">
-let line (p1:Point) (p2:Point) = 
-    { new Shape with
-      member this.Draw() = [Line(p1, p2)]
-      member this.HitTest(point) = true
-    }
-</pre>
-<pre class="fsh top-margin smaller">
-let compositeShape (shapes:Shape list) = 
-  { new Shape with 
-    member this.Draw() = 
-      [ for shape in shapes do 
-          for instr in shape.Draw() do
-            yield instr ]
-    member this.HitTest(point) = 
-      shapes |> List.exists(fun shape -> shape.HitTest(point)) }
-</pre>
-
+      <iframe src="./Content/snips/composite.html" style="width: 100%"></iframe>
     </article>
 
     <article class="smaller">
@@ -925,9 +874,21 @@ let compositeShape (shapes:Shape list) =
         </table>
       </div>
     </article>
-
+    
+    <article>
+      <h3>Average Developers Implement Patterns Poorly</h3>
+      <ul>
+        <li>We sometimes interpret them too rigidly and fail to adapt the recipe to our circumstances</li>
+        <li>Sometimes we bastardize it by interpreting it too loosely</li>
+        <li>Maybe the pattern becomes the feature rather than the thing it's solving</li>
+        <li>Other developers can find pattern code to be too abstract</li>
+        <li>Pattern code often requires good tools and skills for navigating many files</li>
+        <li>We want to mix and match patterns and implement composition poorly</li>
+      </ul>
+    </article>
+    
     <article class="small">
-      <h3>Should we use metaphorical names for type signatures?</h3>
+      <h3>How about new names for design patterns around type signatures?</h3>
       <table>
         <tr><th>Action</th><td>() &rarr; ()</td></tr>
         <tr><th>Source</th><td>() &rarr; a</td></tr>
@@ -940,9 +901,25 @@ let compositeShape (shapes:Shape list) =
         <tr><th>Folder</th><td>a &rarr; b &rarr; a</td></tr>
       </table>
       <ul>
-        <li>Don't these patterns already have canonical names?</li>
+        <li>I'm half serious/half joking</li>
       </ul>
     </article>
+    
+    <article>
+      <h3>Names are a Double Edge Sword</h3>
+      <ul>
+        <li>Names work better with simple structures, the more complex the more subjective</li>
+        <li>Names without structure can act as blinders</li>
+        <li>Removing names can help us isomorphic relationships between structures</li>
+        <li>Structure without names can help reduce a problem down to it's essence</li>
+        <li>Mathematicians use canonical names that sound very abstract</li>
+        <li>
+          It's useful to know these names and understand their structures because it
+          allows us to reuse a huge body of work
+        </li>
+      </ul>
+    </article>
+    
 
     <article>
       <h1>Patterns Implemented Elegantly with Union Types and Pattern Matching</h1>
@@ -1060,28 +1037,8 @@ string Print(IExpr expr) {
     <article class="smaller">
       <div>
         <h3>How about a universal language?</h3>
-
-        <pre class="fsh top-margin" style="margin: 1em 0em 1em 0em">
-type var = string
-type term = 
-  | Variable of var
-  | Abstraction of var * term
-  | Application of term * term
-</pre>
-
-        <h3>Examples</h3>
-        <pre class="fsh top-margin" style="margin: 1em 0em 1em 0em">
-// ID := λx.x
-// TRUE := λx.λy.x
-// FALSE := λx.λy.y
-// AND := λp.λq.p q p
-let Id = Abstraction("x", Variable("x"))
-let True = Abstraction("x", Abstraction("y", Variable("x")))
-let False = Abstraction("x", Abstraction("y", Variable("y")))
-let And = Abstraction("p", Abstraction("q", 
-    Application( Application( Variable("p", Variable("q")), Variable("p"))))
-</pre>
-
+        
+        <iframe src="./Content/snips/lambda1.htm" style="width: 100%"></iframe>
       </div>
     </article>
 
@@ -1126,55 +1083,7 @@ let And = Abstraction("p", Abstraction("q",
     
     <article class="smaller">
       <h3>Converting F# to Pure Lambda Calculus</h3>
-      <pre class="fsh top-margin">
-let rec toLambda (e:Microsoft.FSharp.Quotations.Expr) =
-  match e with
-  | Patterns.Lambda(v, e) -> Lambda(v.Name, toLambda e)
-  | Patterns.Application(left, right) -> App(toLambda left, toLambda right)
-  | Patterns.Var(var) -> Var(var.Name)
-  | e -> 
-    let typeName = e.Type.ToString()
-    raise (System.Exception(sprintf "Cannot convert %s to lambda" typeName))
-</pre>
-      <p>
-        Examples:
-        <pre class="fsh top-margin">
-let FsTrue = &lt;@@ fun x y -> x @@&gt; |> toLambda
-let FsFalse = &lt;@@ fun x y -> y @@&gt; |> toLambda
-let FsAnd = &lt;@@ fun p q -> p q p @@&gt; |> toLambda
-</pre>
-      </p>
-
-      <p>Actually...  FsAnd will not compile because the Damas-Hindley-Milner type
-      system cannot infer the type.</p>
-    </article>
-
-    <article class="smaller">
-      <h3>Modifying our Translator to Support FsAnd</h3>
-      <pre class="fsh top-margin">
-type Fn = delegate of Fn -> Fn
-</pre>
-<p>Note the recursive type above defined as a <b>delegate</b></p>      
-<pre class="fsh top-margin">
-let rec toLambda (e:Microsoft.FSharp.Quotations.Expr) =
-match e with
-| Patterns.Lambda(v, e) -> Lambda(v.Name, toLambda e)
-  | Patterns.Application(left, right) -> App(toLambda left, toLambda right)
-  | Patterns.Var(var) -> Var(var.Name)
-  | Patterns.Call(Some(left), methodInfo, [right]) 
-      when methodInfo.Name = "Invoke" -> App(toLambda left, toLambda right)
-  | e -> 
-    let typeName = e.Type.ToString()
-    raise (System.Exception(sprintf "Cannot convert %s to lambda" typeName))
-</pre>
-      <p>
-        Examples:
-        <pre class="fsh top-margin">
-let FsTrue = &lt;@@ fun x y -> x @@&gt; |> toLambda
-let FsFalse = &lt;@@ fun x y -> y @@&gt; |> toLambda
-let FsAnd = &lt;@@ fun (p:fn) (q:fn) -> p.Invoke(q).Invoke(p) @@&gt; |> toLambda
-</pre>
-      </p>
+      <iframe src="./Content/snips/lambda2.htm" style="width: 100%"></iframe>
     </article>
     
     <article class="smaller">
@@ -1229,15 +1138,48 @@ let printEval max term =
       
     </article>
     
-
     <article>
-      <h1>Implementing Patterns for DSLs</h1>
+      <h1>Where to Start</h1>
     </article>
+
+    <article class="smaller">
+      <div>
+        <small><q>Show me your flowchart and conceal your tables, and I shall continue to be mystified. Show me your tables, and I won't usually need your flowchart; it'll be obvious.</q></small>
+        <div class='author'>Fred Brooks</div>
+      </div>
+    </article>
+
+    <article class="smaller">
+      <div>
+        <small><q>Bad programmers worry about the code. Good programmers worry about data structures and their relationships.</q></small>
+        <div class='author'>Linus Torvalds</div>
+      </div>
+    </article>
+
+
+    <article class="smaller">
+      <div>
+        <small><q>Smart data structures and dumb code works a lot better than the other way around</q></small>
+        <div class='author'>Eric Raymond</div>
+      </div>
+    </article>
+    
+    <article>
+      <h3>A Problem Solving Progression</h3>
+      <ol>
+        <li>Start by solving your program as well defined data type</li>
+        <li>Then try solving it with simple transformations</li>
+        <li>Then try a conventional workflow</li>
+        <li>If a conventional workflow becomes too complicated...</li>
+      </ol>
+      
+      <p class="note">Note:  F# typically forces your code to read in this order</p>
+    </article>
+    
 
 <article class="">
   <div>
-    <h3>
-      Aync Builder</h3>
+    <h3>Computation Expressions</h3>
     <iframe src="./Content/snips/async1.htm" style="width: 100%"></iframe>
   </div>
 </article>
@@ -1267,83 +1209,98 @@ let printEval max term =
         <tr><th>While</th><td>(() &rarr; bool) * (M a &rarr; M a)</td></tr>
       </table>
     </article>
-
+    
     <article class="smaller">
-  <div>
-    <h3>
-      Enumerating All Possible Types</h3>
-    <table>
-      <tr>
-        <td>
-          <code>'a</code>
-        </td>
-        <td>
-          A value
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>() -> 'a</code>
-        </td>
-        <td>
-          Function - no args returning a value
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>() -> IO<'a></code>
-        </td>
-        <td>
-          Function returning some input
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>'a -> 'a</code>
-        </td>
-        <td>
-          A pure function returning its own type
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>'a -> 'b</code>
-        </td>
-        <td>
-          A regular function
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>'a * 'b</code>
-        </td>
-        <td>
-          Tuples
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>'a + 'b</code>
-        </td>
-        <td>
-          Discriminated Unions
-        </td>
-      </tr>
-    </table>
-    <p class="note">
-      This assumes we're talking about pure functions</p>
-    <br />
-    <h3 class="top-margin">
-      How can we account for side-effects in types?</h3>
-  </div>
-</article>
-                       
+      <div>
+        <h3>Counting Types</h3>
+        <table>
+          <tr>
+            <td>
+              <code>'a</code>
+            </td>
+            <td>
+              A value
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <code>() -> 'a</code>
+            </td>
+            <td>
+              Function - no args returning a value
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <code>() -> IO<'a></code>
+            </td>
+            <td>
+              Function returning some input
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <code>'a -> 'a</code>
+            </td>
+            <td>
+              A pure function returning its own type
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <code>'a -> 'b</code>
+            </td>
+            <td>
+              A regular function
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <code>'a * 'b</code>
+            </td>
+            <td>
+              Tuples
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <code>'a + 'b</code>
+            </td>
+            <td>
+              Discriminated Unions
+            </td>
+          </tr>
+        </table>
+        <p class="note">
+          This assumes we're talking about pure functions
+        </p>
+        <br />
+        <h3 class="top-margin">
+          How can we account for side-effects in types?
+        </h3>
+      </div>
+    </article>
+    
+    <article>
+      <h1>Before We Finish Up</h1>
+    </article>
+    
+    <article>
+      <h3>Design Patterns are Important</h3>
+      <ul>
+        <li>Your average developer is busy and often relies on recipies</li>
+        <li>They *should* learn the theory, but we need a safety net</li>
+        <li>If they're going to copy + paste - <a href="http://www.phptherightway.com/">Show them </a></li>
+        <li>We can lure developers by first translating ideas to their language</li>
+      </ul>
+    </article>
+
+    
 
 
 
 
-
-<article class="smaller">
+<!--<article class="smaller">
   <div class="">
     <h3 class="center">
       Abstraction</h3>
@@ -1366,7 +1323,7 @@ let printEval max term =
       <li>Tools: Category theory, type theory</li>
     </ul>
   </div>
-</article>
+</article>-->
 
 
 
@@ -1374,20 +1331,13 @@ let printEval max term =
   <h4>
     Contact Info</h4>
   <ul>
-    <li>Website: <a href="www.njgeeks.com">www.njgeeks.com</a></li>
+    <li>Website: <a href="https://sgoguen.github.io/">https://sgoguen.github.io/</a></li>
     <li>Twitter: <a href="http://twitter.com/#!/sgoguen">sgoguen</a></li>
     <li>Google+ &amp; Email: <a href="">sgoguen@gmail.com</a></li>
-    <li>Bookmarks: <a href="http://www.delicious.com/sgoguen">delicious.com/sgoguen</a></li>
   </ul>
-  <h4>
-    Free F# Resources</h4>
-  <ul>
-    <li><a href="http://www.tryfsharp.org/">www.tryfsharp.org</a> - In the Browser with
-      Guided Tour</li>
-    <li><a href="http://fssnip.net/">FSSnip</a> - F# Snippets Website </li>
-    <li><a href="http://en.wikibooks.org/wiki/F_Sharp_Programming">F# Wikibook</a> - Juliet
-      Rosenthal's free book</li>
-  </ul>
+  <p>
+    A link to my presentation is on my github page.
+  </p>
 </article>
 
   </section>

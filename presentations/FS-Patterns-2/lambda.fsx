@@ -16,20 +16,20 @@ module Lambda =
   let rec ToString this = 
     match this with
     | Lambda(var, body) -> 
-      sprintf "%s%s.%s" lambdaSymbol var (ToString body)
+        sprintf "%s%s.%s" lambdaSymbol var (ToString body)
     | Var(var) -> var
     | App(left,right) -> 
-      sprintf "(%s %s)" (ToString left) (ToString right)
+        sprintf "(%s %s)" (ToString left) (ToString right)
   let rec fromExpr (e:Microsoft.FSharp.Quotations.Expr) =
     match e with
     | Patterns.Lambda(v, e) -> Lambda(v.Name, fromExpr e)
     | Patterns.Application(left, right) -> App(fromExpr left, fromExpr right)
     | Patterns.Var(var) -> Var(var.Name)
     | Patterns.Call(Some(left), methodInfo, [right]) when methodInfo.Name = "Invoke" -> 
-      App(fromExpr left, fromExpr right)
+        App(fromExpr left, fromExpr right)
     | e -> 
-      let typeName = e.Type.ToString()
-      raise (System.Exception(sprintf "Cannot convert %s to lambda" typeName))
+        let typeName = e.Type.ToString()
+        raise (System.Exception(sprintf "Cannot convert %s to lambda" typeName))
   let rec substitute (varName:var) (withExpr:term) (expr:term) =
     let doSubRec = substitute varName withExpr 
     match expr with
@@ -87,13 +87,13 @@ module Lambda =
     last
 
 module BooleanLogic =
-  let Id = <@@ fun x -> x @@> |> Lambda.fromExpr |> Lambda.alphaNormalize
-  let True = <@@ fun x y -> x @@> |> Lambda.fromExpr |> Lambda.alphaNormalize
-  let False = <@@ fun x y -> y @@> |> Lambda.fromExpr |> Lambda.alphaNormalize
-  let Not = <@@ fun p a b -> p b a @@> |> Lambda.fromExpr |> Lambda.alphaNormalize
-  let And = <@@ fun (p:Fn) (q:Fn) -> p.Invoke(q).Invoke(p) @@> |> Lambda.fromExpr |> Lambda.alphaNormalize
+  let Id = <@@ fun x -> x @@> |> Lambda.fromExpr 
+  let True = <@@ fun x y -> x @@> |> Lambda.fromExpr 
+  let False = <@@ fun x y -> y @@> |> Lambda.fromExpr 
+  let Not = <@@ fun p a b -> p b a @@> |> Lambda.fromExpr 
+  let And = <@@ fun (p:Fn) (q:Fn) -> p.Invoke(q).Invoke(p) @@> |> Lambda.fromExpr 
 
-  let ex1 = App(App(And, True), True) |> Lambda.printEval 10
+  let ex1 = App(And, True) |> Lambda.printEval 10
 
   let Zero = <@@ fun f x -> x @@> |> Lambda.fromExpr 
   let One = <@@ fun f x -> f x @@> |> Lambda.fromExpr
