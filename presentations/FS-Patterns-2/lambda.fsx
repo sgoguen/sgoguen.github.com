@@ -93,7 +93,7 @@ module BooleanLogic =
   let Not = <@@ fun p a b -> p b a @@> |> Lambda.fromExpr 
   let And = <@@ fun (p:Fn) (q:Fn) -> p.Invoke(q).Invoke(p) @@> |> Lambda.fromExpr 
 
-  let ex1 = App(And, True) |> Lambda.printEval 10
+  let ex1 = App(And, False) |> Lambda.printEval 10
 
   let Zero = <@@ fun f x -> x @@> |> Lambda.fromExpr 
   let One = <@@ fun f x -> f x @@> |> Lambda.fromExpr
