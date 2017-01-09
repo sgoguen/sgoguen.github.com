@@ -13,7 +13,7 @@ Larry      | David     | Comedian
 
 We could then load the data with a simple F# script and run in it LINQPad
 
-```fsharp
+```ocaml
 open FSharp.Data
 
 [<Literal>]
