@@ -1,22 +1,14 @@
-### Welcome to GitHub Pages.
-This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:
+# Steve's Github Profile
 
-```
-$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-```
+Welcome!  This is a collection of my projects and presentations.
 
-If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.
+## Projects
+* [Steego\Linq](https://github.com/steego/linq|Steego\Linq) - A PHP Library implementing eagar LINQ for arrays
+* [Prototypes](https://github.com/sgoguen/Prototypes) - A random collection of prototype code
 
-### Designer Templates
-We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.
-
-### Rather Drive Stick?
-If you prefer to not use the automatic generator, push a branch named `gh-pages` to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.
-
-### Authors and Contributors
-You can @mention a GitHub username to generate a link to their profile. The resulting `<a>` element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (@defunkt), PJ Hyett (@pjhyett), and Tom Preston-Werner (@mojombo) founded GitHub.
-
-### Support or Contact
-Having trouble with Pages? Check out the documentation at http://help.github.com/pages or contact support@github.com and we’ll help you sort it out.
+## Presentations
+* [Unobtrustive JavaScript (2007)](presentations/unobtrusive-ajax/)
+* [A Tour of jQuery (2007)](presentations/jquery/)
+* [Monads](presentations/Monads.ppt)
+* [F# Design Patterns - Presentation](presentations/FS-Patterns-Long/)
+* [F# Design Patterns - Washington, DC (Oct 2014)](presentations/FS-Patterns-2)
