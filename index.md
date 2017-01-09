@@ -3,7 +3,7 @@
 Welcome!  This is a collection of my projects and presentations.
 
 ## Projects
-* [Steego Linq](https://github.com/steego/linq|Steego\Linq) - A PHP Library implementing eagar LINQ for arrays
+* [Steego Linq](https://github.com/steego/linq) - A PHP Library implementing eagar LINQ for arrays
 * [Prototypes](https://github.com/sgoguen/Prototypes) - A random collection of prototype code
 
 ## Presentations
