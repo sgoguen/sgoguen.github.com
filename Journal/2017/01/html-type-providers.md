@@ -17,7 +17,8 @@ We could then load the data with a simple F# script and run in it LINQPad
 open FSharp.Data
 
 [<Literal>]
-let sourceUrl = "http://sgoguen.github.io/Journal/2017/01/html-type-providers.html"
+let sourceUrl = 
+  "http://sgoguen.github.io/Journal/2017/01/html-type-providers.html"
 type TestData = HtmlProvider<sourceUrl>
 
 module Users = begin
@@ -25,7 +26,11 @@ module Users = begin
 
   let fetch() = 
     let rows = TestData.Load(sourceUrl).Tables.Users.Rows
-    [ for r in rows -> { FirstName = r.``First Name``; LastName = r.``Last Name``; Title = r.Title } ]
+    [ for r in rows -> { 
+        FirstName = r.``First Name``
+        LastName = r.``Last Name``
+        Title = r.Title 
+      } ]
     
 end
 
