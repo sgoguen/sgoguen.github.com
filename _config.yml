@@ -2,7 +2,7 @@ title: My Notes
 description: 
 google_analytics: 
 show_downloads: false
-theme: jekyll-theme-leap-day
+theme: jekyll-theme-architect
 
 gems:
   - jekyll-mentions
