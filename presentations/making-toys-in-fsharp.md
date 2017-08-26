@@ -58,3 +58,35 @@
   * Putting it into production
   * Caring what people think about it
 * I want us to focus on programming and collaborating for the fun of it
+
+
+------------------------------------------------------
+
+
+# I Want to Show You LINQPad
+
+* Q: Who has used LINQPad?
+* 7 min - The Basics the LINQPad User Interface
+ * Exploring a Table 
+ * Q: How do you explore an unknown database?
+ 
+* 5 - Watching a Process
+ * 2 min - Console.WriteLine
+ * Observing Processes with Observables
+ * Q:  How do you monitor your process code?
+ * Q:  How rich is the feedback
+ 
+* Toy GUIs by Dumping Objects
+ * A Cheap File Explorer
+ * Making it More Interactive
+ * Q: Who prototypes interfaces?  How would you ideally do it?
+ * Prototype a Dashboard
+  * Custom Printing
+  
+* Other Features
+ * Lazy Objects
+ * Async Objects
+ * TPL-DataFlows
+ * Panels
+ * Embedding Controls
+ * Q: What Custom Views Would You Like to See?
