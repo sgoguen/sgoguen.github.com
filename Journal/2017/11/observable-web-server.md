@@ -1,8 +1,24 @@
-# An Observable Web Server
+# Abstracting an Observable Web Framework
 
-I've been playing around with an idea recently that 
+I've been playing around with an idea to make it easy to build real-time web applications quickly using a test abstraction:  Observables.
 
-## Step 1. Abstracting a Regular Web Server
+## What's an observable?
+
+An observable is an object that can be observed.  How do you ask?  By subscribing to it:
+
+```fsharp
+let watchableFolder : IObservable<string>
+
+watchableFolder.Subscribe(fun file -> begin
+    printfn "File: %s has changed." file
+end)
+```
+
+That seems simple enough.  So how is this different from an event?
+
+### Observables can
+
+## 1. Abstracting a Regular Web Server
 
 At its core, HTTP can be viewed as a relatively simple protocol.  If we were to approximate it, we might say the HTTP is a Request/Response protocol that could be abstract with this notation:
 
