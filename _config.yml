@@ -21,7 +21,7 @@ github_username:  sgoguen
 show_downloads: false
 theme: minima
 plugins:
-  - jekyll-feed
+  # - jekyll-feed
   - jekyll-mentions
 
 # Jekyll 3 now only supports Kramdown for Markdown
