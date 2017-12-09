@@ -141,6 +141,13 @@ GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
 
+#Jekyll
+_site
+.sass-cache
+.jekyll-metadata
+vendor
+
+
 # =========================
 # Windows detritus
 # =========================
