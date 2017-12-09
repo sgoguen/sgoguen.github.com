@@ -19,10 +19,12 @@ url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: sgoguen
 github_username:  sgoguen
 show_downloads: false
-theme: minima
+# theme: minima
+theme: jekyll-theme-awesome
 plugins:
   # - jekyll-feed
   - jekyll-mentions
+  # - jekyll-theme-awesome
 
 # Jekyll 3 now only supports Kramdown for Markdown
 kramdown:
