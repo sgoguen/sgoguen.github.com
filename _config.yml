@@ -20,7 +20,7 @@ twitter_username: sgoguen
 github_username:  sgoguen
 show_downloads: false
 # theme: minima
-theme: jekyll-theme-awesome
+theme: jekyll-theme-hacker
 plugins:
   # - jekyll-feed
   - jekyll-mentions
