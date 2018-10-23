@@ -1,2 +1,0 @@
-# Socrates Explains Enumerables
-
