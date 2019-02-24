@@ -14,7 +14,7 @@ Since it was first published in 1994, Design Patterns and the Gang of Four (GoF)
 
 F# is thought of as language suited for math intensive applications and overlooked as great tool for building web applications.  We've seen languages like Ruby leverage its dynamic nature to make web development easier. This presentation will talk about how C# developers can add F# to their tool set and leverage F#'s strengths.  We'll see how F# is not only well-suited for modeling your domain, but great at creating reusable components that can be consumed in your MVC applications and be used on the server-side and client side.
 
-## Prototyping with Types and Functions
+## Prototyping on the Cheap
 
 In this talk, we'll interactively explore ideas by creating models and prototypes we can use to discuss ideas with colleagues and business analysists.  Armed with our toolset, LINQPad, F# and C# will build static, generative and interactive models that let us test our and demo our ideas on the cheap!
 
