@@ -4,7 +4,7 @@ Below are some of the talks I've given at various venues.
 
 # Bio
 
-Steve works in the building materials industry builds eCommerce, merchandising and delivery tracking systems using a mix of object-oriented and functional components. When he's not busy, he sometimes makes very short F# screencasts on Twitter on @fsharpcasts. You can reach him on Twitter @sgoguen.
+Steve works in the building materials industry and builds ecommerce, merchandising and delivery tracking systems using a mix of object-oriented and functional components. When he's not busy, he sometimes makes very short F# screencasts on Twitter on @fsharpcasts. You can reach him on Twitter @sgoguen.
 
 ## The GoF Design Patterns in F# 
 
