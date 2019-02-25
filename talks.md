@@ -16,5 +16,7 @@ F# is thought of as language suited for math intensive applications and overlook
 
 ## Prototyping on the Cheap
 
-In this talk, we'll interactively explore ideas by creating models and prototypes we can use to discuss ideas with colleagues and business analysists.  Armed with our toolset, LINQPad, F# and C# will build static, generative and interactive models that let us test our and demo our ideas on the cheap!
+Fred Brooks tells us when building a new system to plan to throw one away, because you will, anyhow.  
+
+In this talk, we'll explore different .NET tools & libraries we can use to create models and interactive prototypes that we plan on throwing away.  We'll talk about how we can build simple but readable static models in F# to help us understand the domain model and generate examples.  We'll implement functions in C#/F# that we can show to a business analysist and use fuzzing tools like QuickCheck to look for counter-examples.  Finally, we'll create quick & dirty UIs in LINQPad that let us create interactive models so we can see what happens, and we'll inject random errors to see what happens when things break.
 
