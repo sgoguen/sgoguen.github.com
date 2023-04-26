@@ -121,7 +121,7 @@ function Resume(props: { resume: Resume }) {
         </div>)}
 
 
-        <h2>LINKS</h2>
+        {/* <h2>LINKS</h2>
         <table>
             <tbody>
                 {r.links.map((l, i) => <tr key={i}>
@@ -129,7 +129,7 @@ function Resume(props: { resume: Resume }) {
                     <td><a href="{l.url}">{l.url}</a></td>
                 </tr>)}
             </tbody>
-        </table>
+        </table> */}
 
         <h2>KEYWORDS</h2>
         <ul id="skills">
