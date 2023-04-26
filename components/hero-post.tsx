@@ -37,13 +37,14 @@ const HeroPost = ({
               {title}
             </Link>
           </h3>
+        </div>
+        {/* Align right with tailwind */}
+        <div className="text-right">
           <div className="mb-4 md:mb-0 text-lg">
             <DateFormatter dateString={date} />
           </div>
-        </div>
-        <div>
-          <p className="text-lg leading-relaxed mb-4">{excerpt}</p>
-          <Avatar name={author.name} picture={author.picture} />
+          {/* <p className="text-lg leading-relaxed mb-4">{excerpt}</p>
+          <Avatar name={author.name} picture={author.picture} /> */}
         </div>
       </div>
     </section>

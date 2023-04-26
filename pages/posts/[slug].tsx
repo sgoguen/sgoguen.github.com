@@ -80,6 +80,17 @@ export async function getStaticProps({ params }: Params) {
   }
 }
 
+function fixSlug(slug: string | string[] | undefined) {
+  if (typeof slug === 'string') {
+    return slug
+  } else if (Array.isArray(slug)) {
+    // Combine the array into a string
+    return slug.join('/')
+  } else {
+    return ''
+  }
+}
+
 export async function getStaticPaths() {
   const posts = getAllPosts(['slug'])
 

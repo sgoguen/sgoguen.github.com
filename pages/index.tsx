@@ -22,53 +22,18 @@ export default function Index({ allPosts }: Props) {
           <title>Steve Goguen's Blog</title>
         </Head>
         <Container>
+          {/* <pre>{JSON.stringify(allPosts, null, 3)}</pre> */}
+
           <Intro />
 
-          {/* Presentations */}
-          <h2 className="mb-8 text-5xl md:text-4xl font-bold tracking-tighter leading-tight">
-            Presentations
-          </h2>
+          {/* <h2 className="mb-8 text-5xl md:text-4xl font-bold tracking-tighter leading-tight">Hello!</h2>
+          <ul>
+            <li className="mb-4">I'm a software developer who loves to learn and teach.</li>
+          </ul> */}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-16 lg:gap-x-32 gap-y-20 md:gap-y-32 mb-32">
-            <div className="flex flex-col justify-center">
-              <h3 className="text-3xl md:text-4xl font-bold tracking-tighter leading-tight">
-                <a
-                  href="https://www.youtube.com/watch?v=QZVYP3cPcWQ"
-                  className="hover:underline"
-                >
-                  How to Build a Serverless GraphQL API with AWS Amplify
-                </a>
-              </h3>
-              <div className="text-lg mt-3">
-                <a
-                  href="https://www.youtube.com/watch?v=QZVYP3cPcWQ"
-                  className="text-blue-600 hover:underline"
-                >
-                  Watch on YouTube
-                </a>
-              </div>
-            </div>
-            <div className="flex flex-col justify-center">
-              <h3 className="text-3xl md:text-4xl font-bold tracking-tighter leading-tight">
-                <a
-                  href="https://www.youtube.com/watch?v=QZVYP3cPcWQ"
-                  className="hover:underline"
-                >
-                  How to Build a Serverless GraphQL API with AWS Amplify
-                </a>
-              </h3>
-              <div className="text-lg mt-3">
-                <a
-                  href="https://www.youtube.com/watch?v=QZVYP3cPcWQ"
-                  className="text-blue-600 hover:underline"
-                >
-                  Watch on YouTube
-                </a>
-              </div>
-            </div>
-          </div>
 
-          {/* {heroPost && (
+
+          {heroPost && (
             <HeroPost
               title={heroPost.title}
               coverImage={heroPost.coverImage}
@@ -77,7 +42,7 @@ export default function Index({ allPosts }: Props) {
               slug={heroPost.slug}
               excerpt={heroPost.excerpt}
             />
-          )} */}
+          )}
 
           {/* Blog Stories */}
           {morePosts.length > 0 && <MoreStories posts={morePosts} />}
@@ -85,6 +50,56 @@ export default function Index({ allPosts }: Props) {
       </Layout>
     </>
   )
+}
+
+function Presentations() {
+  return <>
+    {/* Presentations */}
+    <h2 className="mb-8 text-5xl md:text-4xl font-bold tracking-tighter leading-tight">
+      Presentations
+    </h2>
+
+
+    <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-16 lg:gap-x-32 gap-y-20 md:gap-y-32 mb-32">
+      <div className="flex flex-col justify-center">
+        <h3 className="text-3xl md:text-4xl font-bold tracking-tighter leading-tight">
+          <a
+            href="https://www.youtube.com/watch?v=QZVYP3cPcWQ"
+            className="hover:underline"
+          >
+            How to Build a Serverless GraphQL API with AWS Amplify
+          </a>
+        </h3>
+        <div className="text-lg mt-3">
+          <a
+            href="https://www.youtube.com/watch?v=QZVYP3cPcWQ"
+            className="text-blue-600 hover:underline"
+          >
+            Watch on YouTube
+          </a>
+        </div>
+      </div>
+      <div className="flex flex-col justify-center">
+        <h3 className="text-3xl md:text-4xl font-bold tracking-tighter leading-tight">
+          <a
+            href="https://www.youtube.com/watch?v=QZVYP3cPcWQ"
+            className="hover:underline"
+          >
+            How to Build a Serverless GraphQL API with AWS Amplify
+          </a>
+        </h3>
+        <div className="text-lg mt-3">
+          <a
+            href="https://www.youtube.com/watch?v=QZVYP3cPcWQ"
+            className="text-blue-600 hover:underline"
+          >
+            Watch on YouTube
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </>
 }
 
 export const getStaticProps = async () => {

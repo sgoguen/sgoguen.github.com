@@ -1,6 +1,6 @@
 ---
 title: 'Object - Show thyself!'
-excerpt: 'In 2007, I became obsessed with LINQPad and the object dumper.'
+excerpt: ''
 coverImage: '/assets/white-and-grey-fractal.png'
 date: '2020-09-24T20:51:00.000Z'
 author:
@@ -9,8 +9,6 @@ author:
 ogImage:
   url: '/assets/white-and-grey-fractal.png'
 ---
-
-## Object - Show thyself!
 
 In 2007, I became obsessed with LINQPad.  If you've never used it, LINQPad is a tool that allows you to write C# code and execute it.  It's a great tool for learning C# and for quickly prototyping code.  It's also a great tool for quickly prototyping LINQ queries.  I used it to quickly prototype LINQ queries for a project I was working on at the time.  I was so impressed with the object dumper that I wrote a blog post about it.  I've been using the object dumper ever since.
 
