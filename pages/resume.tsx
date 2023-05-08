@@ -156,7 +156,7 @@ function ResumeData(): Resume {
                 location: "Herndon, VA",
                 position: "IT Team Lead",
                 startDate: "January 2018",
-                endDate: "Present",
+                endDate: "May 2023",
                 bullets: [
                     `Launched www.becn.com and led a team of front-end developers to designed & build the new B2B eCommerce front-end written in Angular and TypeScript.`,
                     // `Implemented a catalog, quoting system, template system and manufacturer rebate tracking system`,
